@@ -15,7 +15,7 @@
 
 -- PROGRAM		"Quartus Prime"
 -- VERSION		"Version 22.1std.1 Build 917 02/14/2023 SC Lite Edition"
--- CREATED		"Fri Aug  4 20:14:01 2023"
+-- CREATED		"Sat Aug 26 16:43:44 2023"
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.all; 
@@ -25,49 +25,52 @@ LIBRARY work;
 ENTITY mini_cpu IS 
 	PORT
 	(
-		clk :  IN  STD_LOGIC;
-		rom_data :  IN  STD_LOGIC_VECTOR(7 DOWNTO 0);
-		updt :  OUT  STD_LOGIC;
-		a :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
-		b :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0);
-		op :  OUT  STD_LOGIC_VECTOR(3 DOWNTO 0);
-		pline :  OUT  STD_LOGIC_VECTOR(3 DOWNTO 0)
+		CLOCK :  IN  STD_LOGIC;
+		EN :  IN  STD_LOGIC;
+		A :  IN  STD_LOGIC_VECTOR(7 DOWNTO 0);
+		B :  IN  STD_LOGIC_VECTOR(7 DOWNTO 0);
+		OPCODE :  IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
+		READSIG :  OUT  STD_LOGIC;
+		WRITESIG :  OUT  STD_LOGIC;
+		FETCHEN :  OUT  STD_LOGIC;
+		CARRY :  OUT  STD_LOGIC;
+		C :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0)
 	);
 END mini_cpu;
 
 ARCHITECTURE bdf_type OF mini_cpu IS 
 
-COMPONENT fetcher
+COMPONENT math_pipeline
 	PORT(clk : IN STD_LOGIC;
-		 fetch_en : IN STD_LOGIC;
-		 data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-		 reg_updt : OUT STD_LOGIC;
-		 pc_en : OUT STD_LOGIC;
-		 op : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-		 operand_a : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-		 operand_b : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-		 pline_sel : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
+		 en : IN STD_LOGIC;
+		 op : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+		 regA : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+		 regB : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+		 readR : OUT STD_LOGIC;
+		 writeR : OUT STD_LOGIC;
+		 fetchE : OUT STD_LOGIC;
+		 carry : OUT STD_LOGIC;
+		 regC : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
 	);
 END COMPONENT;
 
-SIGNAL	SYNTHESIZED_WIRE_0 :  STD_LOGIC;
 
 
 BEGIN 
-SYNTHESIZED_WIRE_0 <= '1';
 
 
 
-b2v_inst : fetcher
-PORT MAP(clk => clk,
-		 fetch_en => SYNTHESIZED_WIRE_0,
-		 data_in => rom_data,
-		 reg_updt => updt,
-		 op => op,
-		 operand_a => a,
-		 operand_b => b,
-		 pline_sel => pline);
-
+b2v_inst : math_pipeline
+PORT MAP(clk => CLOCK,
+		 en => EN,
+		 op => OPCODE,
+		 regA => A,
+		 regB => B,
+		 readR => READSIG,
+		 writeR => WRITESIG,
+		 fetchE => FETCHEN,
+		 carry => CARRY,
+		 regC => C);
 
 
 END bdf_type;

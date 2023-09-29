@@ -18,7 +18,7 @@
 -- suit user's needs .Comments are provided in each section to help the user  
 -- fill out necessary details.                                                
 -- ***************************************************************************
--- Generated on "08/04/2023 20:14:09"
+-- Generated on "08/26/2023 16:55:15"
                                                             
 -- Vhdl Test Bench template for design  :  mini_cpu
 -- 
@@ -33,70 +33,60 @@ END mini_cpu_vhd_tst;
 ARCHITECTURE mini_cpu_arch OF mini_cpu_vhd_tst IS
 -- constants                                                 
 -- signals                                                   
-SIGNAL a : STD_LOGIC_VECTOR(7 DOWNTO 0);
-SIGNAL b : STD_LOGIC_VECTOR(7 DOWNTO 0);
-SIGNAL clk : STD_LOGIC;
-SIGNAL op : STD_LOGIC_VECTOR(3 DOWNTO 0);
-SIGNAL pline : STD_LOGIC_VECTOR(3 DOWNTO 0);
-SIGNAL rom_data : STD_LOGIC_VECTOR(7 DOWNTO 0);
-SIGNAL updt : STD_LOGIC;
+SIGNAL A : STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL B : STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL C : STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL CARRY : STD_LOGIC;
+SIGNAL CLOCK : STD_LOGIC;
+SIGNAL EN : STD_LOGIC;
+SIGNAL FETCHEN : STD_LOGIC;
+SIGNAL OPCODE : STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL READSIG : STD_LOGIC;
+SIGNAL WRITESIG : STD_LOGIC;
 COMPONENT mini_cpu
 	PORT (
-	a : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-	b : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
-	clk : IN STD_LOGIC;
-	op : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-	pline : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-	rom_data : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-	updt : OUT STD_LOGIC
+	A : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+	B : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+	C : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+	CARRY : OUT STD_LOGIC;
+	CLOCK : IN STD_LOGIC;
+	EN : IN STD_LOGIC;
+	FETCHEN : OUT STD_LOGIC;
+	OPCODE : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
+	READSIG : OUT STD_LOGIC;
+	WRITESIG : OUT STD_LOGIC
 	);
 END COMPONENT;
 BEGIN
 	i1 : mini_cpu
 	PORT MAP (
 -- list connections between master ports and signals
-	a => a,
-	b => b,
-	clk => clk,
-	op => op,
-	pline => pline,
-	rom_data => rom_data,
-	updt => updt
+	A => A,
+	B => B,
+	C => C,
+	CARRY => CARRY,
+	CLOCK => CLOCK,
+	EN => EN,
+	FETCHEN => FETCHEN,
+	OPCODE => OPCODE,
+	READSIG => READSIG,
+	WRITESIG => WRITESIG
 	);
-process
-begin
-	clk <= '0';
-	rom_data <= "10100101";
+process begin
+	EN <= '0';
+	OPCODE <= "0001";
+	A <= "00000101";
+	B <= "00001010";
+	EN <= '1';
 
-	wait for 10 ns;
-	clk <= '1';
-	wait for 10 ns;
-	clk <= '0';
-
-	rom_data <= "00001111";
-
-	wait for 10 ns;
-	clk <= '1';
-	wait for 10 ns;
-	clk <= '0';
-
-	rom_data <= "11110000";
-
-	wait for 10 ns;
-	clk <= '1';
-	wait for 10 ns;
-	clk <= '0';
-
-	wait for 10 ns;
-	clk <= '1';
-	wait for 10 ns;
-	clk <= '0';
-
-	wait for 10 ns;
-	clk <= '1';
-	wait for 10 ns;
-	clk <= '0';
-
-	assert false report "FIN" severity failure;
+	WAIT FOR 100 us;
+	ASSERT FALSE REPORT "FIN" SEVERITY FAILURE;
 end process;
+
+process begin
+	CLOCK <= '1';
+	WAIT FOR 10 ns;
+	CLOCK <= '0';
+	WAIT FOR 10 ns;
+end process;                                        
 END mini_cpu_arch;
