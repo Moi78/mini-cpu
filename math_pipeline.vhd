@@ -20,8 +20,7 @@ end entity math_pipeline;
 architecture a_mpline of math_pipeline is
 	type etat is (Idle, ReadRegs, Exec, WriteReg);
 	signal currentState : etat := Idle;
-	signal resultReg 	  : std_logic_vector(8 downto 0) := "000000000";
-	signal mulRes       : std_logic_vector(17 downto 0);
+	signal resultReg 	  : std_logic_vector(17 downto 0) := (others => '0');
 
 begin
 	process
@@ -29,49 +28,6 @@ begin
 		wait until rising_edge(clk);
 		
 		if en = '1' then
-			case currentState is
-				when Idle =>
-					readR <= '0';
-					writeR <= '0';
-					fetchE <= '1';
-				when ReadRegs =>
-					readR <= '1';
-					fetchE <= '0';
-				when Exec =>
-					if op = "0001" then -- Add
-						resultReg <= std_logic_vector(unsigned('0' & regA) + unsigned('0' & regB));
-						
-					elsif op = "0010" then		-- Mul
-						mulRes <= std_logic_vector(unsigned('0' & regA) * unsigned('0' & regB));
-						resultReg(7 downto 0) <= mulRes(7 downto 0);
-						
-					elsif op = "0011" then		-- Sub
-						resultReg <= std_logic_vector(unsigned('0' & regA) - unsigned('0' & regB));
-						
-					elsif op = "0100" then 	-- Div
-						resultReg <= std_logic_vector(unsigned('0' & regA) / unsigned('0' & regB));
-						
-					elsif op = "0101" then 	-- And
-						resultReg <= std_logic_vector(unsigned('0' & regA) and unsigned('0' & regB));
-						
-					elsif op = "0110" then 	-- Or
-						resultReg <= std_logic_vector(unsigned('0' & regA) or unsigned('0' & regB));
-						
-					elsif op = "0111" then 	-- Xor
-						resultReg <= std_logic_vector(unsigned('0' & regA) xor unsigned('0' & regB));
-						
-					elsif op = "1000" then 	-- Not
-						resultReg <= std_logic_vector(not unsigned('0' & regA));
-						
-					else
-						resultReg <= "000000000";
-						
-					end if;
-					
-				when WriteReg =>
-					writeR <= '1';
-			end case;
-				
 			case currentState is
 				when Idle =>
 					currentState <= ReadRegs;
@@ -85,10 +41,48 @@ begin
 					currentState <= Idle;
 			end case;
 		else
-			readR <= '0';
-			writeR <= '0';
 			currentState <= Idle;
 		end if;
+	end process;
+	
+	process (currentState)
+	begin
+		case currentState is
+			when Idle =>
+				readR <= '0';
+				writeR <= '0';
+				
+				resultReg <= (others => '0');
+				
+				fetchE <= '0';
+			when ReadRegs =>
+				readR <= '1';
+				fetchE <= '1';
+			when Exec =>
+				readR <= '0';
+			
+				if op = "0001" then -- Add
+					resultReg(8 downto 0) <= std_logic_vector(unsigned('0' & regA) + unsigned('0' & regB));
+				elsif op = "0010" then		-- Mul
+					resultReg <= std_logic_vector(unsigned('0' & regA) * unsigned('0' & regB));
+				elsif op = "0011" then		-- Sub
+					resultReg(8 downto 0) <= std_logic_vector(unsigned('0' & regA) - unsigned('0' & regB));
+				elsif op = "0100" then 	-- Div
+					resultReg(8 downto 0) <= std_logic_vector(unsigned('0' & regA) / unsigned('0' & regB));
+				elsif op = "0101" then 	-- And
+					resultReg(8 downto 0) <= std_logic_vector(unsigned('0' & regA) and unsigned('0' & regB));
+				elsif op = "0110" then 	-- Or
+					resultReg(8 downto 0) <= std_logic_vector(unsigned('0' & regA) or unsigned('0' & regB));
+				elsif op = "0111" then 	-- Xor
+					resultReg(8 downto 0) <= std_logic_vector(unsigned('0' & regA) xor unsigned('0' & regB));
+				elsif op = "1000" then 	-- Not
+					resultReg(8 downto 0) <= std_logic_vector(not unsigned('0' & regA));
+				else
+					resultReg(8 downto 0) <= (others => '0');
+				end if;
+			when WriteReg =>
+				writeR <= '1';
+		end case;
 	end process;
 	
 	regC <= resultReg(7 downto 0);

@@ -15,7 +15,7 @@
 
 -- PROGRAM		"Quartus Prime"
 -- VERSION		"Version 22.1std.1 Build 917 02/14/2023 SC Lite Edition"
--- CREATED		"Sat Aug 26 16:43:44 2023"
+-- CREATED		"Sat Sep 30 17:56:48 2023"
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.all; 
@@ -26,19 +26,23 @@ ENTITY mini_cpu IS
 	PORT
 	(
 		CLOCK :  IN  STD_LOGIC;
-		EN :  IN  STD_LOGIC;
-		A :  IN  STD_LOGIC_VECTOR(7 DOWNTO 0);
-		B :  IN  STD_LOGIC_VECTOR(7 DOWNTO 0);
-		OPCODE :  IN  STD_LOGIC_VECTOR(3 DOWNTO 0);
+		DATA_IN :  IN  STD_LOGIC_VECTOR(7 DOWNTO 0);
 		READSIG :  OUT  STD_LOGIC;
-		WRITESIG :  OUT  STD_LOGIC;
-		FETCHEN :  OUT  STD_LOGIC;
 		CARRY :  OUT  STD_LOGIC;
 		C :  OUT  STD_LOGIC_VECTOR(7 DOWNTO 0)
 	);
 END mini_cpu;
 
 ARCHITECTURE bdf_type OF mini_cpu IS 
+
+COMPONENT reg
+GENERIC (size : INTEGER
+			);
+	PORT(en : IN STD_LOGIC;
+		 data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+		 data_out : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+	);
+END COMPONENT;
 
 COMPONENT math_pipeline
 	PORT(clk : IN STD_LOGIC;
@@ -54,23 +58,80 @@ COMPONENT math_pipeline
 	);
 END COMPONENT;
 
+COMPONENT fetcher
+	PORT(clk : IN STD_LOGIC;
+		 fetch_en : IN STD_LOGIC;
+		 data_in : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+		 pline_en : OUT STD_LOGIC;
+		 pc_en : OUT STD_LOGIC;
+		 op : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
+		 operand_a : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+		 operand_b : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+		 pline_sel : OUT STD_LOGIC_VECTOR(3 DOWNTO 0)
+	);
+END COMPONENT;
+
+SIGNAL	selector :  STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_11 :  STD_LOGIC;
+SIGNAL	SYNTHESIZED_WIRE_1 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_3 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_4 :  STD_LOGIC;
+SIGNAL	SYNTHESIZED_WIRE_5 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_7 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_8 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_9 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_10 :  STD_LOGIC;
 
 
 BEGIN 
 
 
 
-b2v_inst : math_pipeline
+b2v_A_Register : reg
+GENERIC MAP(size => 8
+			)
+PORT MAP(en => SYNTHESIZED_WIRE_11,
+		 data_in => SYNTHESIZED_WIRE_1,
+		 data_out => SYNTHESIZED_WIRE_8);
+
+
+b2v_B_Register : reg
+GENERIC MAP(size => 8
+			)
+PORT MAP(en => SYNTHESIZED_WIRE_11,
+		 data_in => SYNTHESIZED_WIRE_3,
+		 data_out => SYNTHESIZED_WIRE_9);
+
+
+b2v_C_Register : reg
+GENERIC MAP(size => 8
+			)
+PORT MAP(en => SYNTHESIZED_WIRE_4,
+		 data_in => SYNTHESIZED_WIRE_5,
+		 data_out => C);
+
+
+b2v_math_pline : math_pipeline
 PORT MAP(clk => CLOCK,
-		 en => EN,
-		 op => OPCODE,
-		 regA => A,
-		 regB => B,
+		 en => SYNTHESIZED_WIRE_11,
+		 op => SYNTHESIZED_WIRE_7,
+		 regA => SYNTHESIZED_WIRE_8,
+		 regB => SYNTHESIZED_WIRE_9,
 		 readR => READSIG,
-		 writeR => WRITESIG,
-		 fetchE => FETCHEN,
+		 writeR => SYNTHESIZED_WIRE_4,
+		 fetchE => SYNTHESIZED_WIRE_10,
 		 carry => CARRY,
-		 regC => C);
+		 regC => SYNTHESIZED_WIRE_5);
+
+
+b2v_op_fetcher : fetcher
+PORT MAP(clk => CLOCK,
+		 fetch_en => SYNTHESIZED_WIRE_10,
+		 data_in => DATA_IN,
+		 pline_en => SYNTHESIZED_WIRE_11,
+		 op => SYNTHESIZED_WIRE_7,
+		 operand_a => SYNTHESIZED_WIRE_1,
+		 operand_b => SYNTHESIZED_WIRE_3);
 
 
 END bdf_type;
