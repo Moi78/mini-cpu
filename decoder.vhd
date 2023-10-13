@@ -4,7 +4,7 @@ use ieee.numeric_std.all;
 
 entity decoder is
 	generic(
-		addr_size : integer := 4
+		addr_size : integer
 	);
 	
 	port(

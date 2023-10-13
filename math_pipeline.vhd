@@ -82,6 +82,7 @@ begin
 				end if;
 			when WriteReg =>
 				writeR <= '1';
+				fetchE <= '0';
 		end case;
 	end process;
 	
