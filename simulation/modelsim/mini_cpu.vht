@@ -18,7 +18,7 @@
 -- suit user's needs .Comments are provided in each section to help the user  
 -- fill out necessary details.                                                
 -- ***************************************************************************
--- Generated on "09/30/2023 17:14:48"
+-- Generated on "10/14/2023 16:36:03"
                                                             
 -- Vhdl Test Bench template for design  :  mini_cpu
 -- 
@@ -33,14 +33,12 @@ END mini_cpu_vhd_tst;
 ARCHITECTURE mini_cpu_arch OF mini_cpu_vhd_tst IS
 -- constants                                                 
 -- signals                                                   
-SIGNAL C : STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL CARRY : STD_LOGIC;
 SIGNAL CLOCK : STD_LOGIC;
 SIGNAL DATA_IN : STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL READSIG : STD_LOGIC;
 COMPONENT mini_cpu
 	PORT (
-	C : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 	CARRY : OUT STD_LOGIC;
 	CLOCK : IN STD_LOGIC;
 	DATA_IN : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
@@ -51,7 +49,6 @@ BEGIN
 	i1 : mini_cpu
 	PORT MAP (
 -- list connections between master ports and signals
-	C => C,
 	CARRY => CARRY,
 	CLOCK => CLOCK,
 	DATA_IN => DATA_IN,
@@ -59,13 +56,22 @@ BEGIN
 	);
 PROCESS
 BEGIN
-	DATA_IN <= "00010001";
+	DATA_IN <= "00100110";
 	WAIT FOR 20 ns;
 
-	DATA_IN <= "00000001";
+	DATA_IN <= "00000011";
 	WAIT FOR 20 ns;
 
-	DATA_IN <= "00100011";
+	DATA_IN <= "10100101";
+	WAIT FOR 90 ns;
+
+	DATA_IN <= "00100001";
+	WAIT FOR 20 ns;
+
+	DATA_IN <= "00000010";
+	WAIT FOR 20 ns;
+
+	DATA_IN <= "00000011";
 	WAIT FOR 20 ns;
 
 	WAIT FOR 200 ns;
@@ -78,5 +84,5 @@ BEGIN
 	WAIT FOR 10 ns;
 	CLOCK <= '1';
 	WAIT FOR 10 ns;
-END PROCESS;                                 
+END PROCESS;                                                    
 END mini_cpu_arch;

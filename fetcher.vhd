@@ -17,7 +17,7 @@ entity fetcher is
 end entity fetcher;
 
 architecture a_fetcher of fetcher is
-	signal fetch_counter : integer range 0 to 4 := 0;
+	signal fetch_counter : integer range 0 to 4 := 4;
 begin
 	process
 	begin
@@ -33,7 +33,7 @@ begin
 		end if;
 	end process;
 	
-	process (fetch_counter, clk)
+	process (fetch_counter)
 	begin
 			-- OP Fetching
 			if fetch_counter = 0 then
