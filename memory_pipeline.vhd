@@ -16,6 +16,7 @@ entity memory_pipeline is
 		i_regC	: in std_logic_vector(7 downto 0);
 		
 		output	: out std_logic_vector(7 downto 0);
+		outputPC	: out std_logic_vector(15 downto 0);
 		updtBus	: out std_logic_vector(1 downto 0) := "00";
 		
 		fetchE	: out std_logic := '0'

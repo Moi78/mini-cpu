@@ -18,6 +18,7 @@ end entity fetcher;
 
 architecture a_fetcher of fetcher is
 	signal fetch_counter : integer range 0 to 4 := 4;
+	signal iPline_en		: std_logic;
 begin
 	process
 	begin
@@ -37,9 +38,6 @@ begin
 	begin
 			-- OP Fetching
 			if fetch_counter = 0 then
-				-- Reset fetcher
-				pline_en <= '0';
-				
 				-- Fetching op code
 				pline_sel <= data_in(7 downto 4);
 				op <= data_in(3 downto 0);
@@ -51,9 +49,13 @@ begin
 				-- Fetching operand b
 				operand_b <= data_in;
 				
-			elsif fetch_counter = 3 then
-				-- Exec instruction
-				pline_en <= '1';
 			end if;
 	end process;
+	
+	with fetch_counter select iPline_en <=
+		'1' when 3 | 4,
+		'0' when others;
+	
+	pline_en <= iPline_en;
+	pc_en <= not iPline_en;
 end architecture a_fetcher;

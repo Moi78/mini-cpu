@@ -18,7 +18,7 @@
 -- suit user's needs .Comments are provided in each section to help the user  
 -- fill out necessary details.                                                
 -- ***************************************************************************
--- Generated on "10/14/2023 16:36:03"
+-- Generated on "10/15/2023 15:24:05"
                                                             
 -- Vhdl Test Bench template for design  :  mini_cpu
 -- 
@@ -35,13 +35,11 @@ ARCHITECTURE mini_cpu_arch OF mini_cpu_vhd_tst IS
 -- signals                                                   
 SIGNAL CARRY : STD_LOGIC;
 SIGNAL CLOCK : STD_LOGIC;
-SIGNAL DATA_IN : STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL READSIG : STD_LOGIC;
 COMPONENT mini_cpu
 	PORT (
 	CARRY : OUT STD_LOGIC;
 	CLOCK : IN STD_LOGIC;
-	DATA_IN : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
 	READSIG : OUT STD_LOGIC
 	);
 END COMPONENT;
@@ -51,30 +49,11 @@ BEGIN
 -- list connections between master ports and signals
 	CARRY => CARRY,
 	CLOCK => CLOCK,
-	DATA_IN => DATA_IN,
 	READSIG => READSIG
 	);
 PROCESS
 BEGIN
-	DATA_IN <= "00100110";
-	WAIT FOR 20 ns;
-
-	DATA_IN <= "00000011";
-	WAIT FOR 20 ns;
-
-	DATA_IN <= "10100101";
-	WAIT FOR 90 ns;
-
-	DATA_IN <= "00100001";
-	WAIT FOR 20 ns;
-
-	DATA_IN <= "00000010";
-	WAIT FOR 20 ns;
-
-	DATA_IN <= "00000011";
-	WAIT FOR 20 ns;
-
-	WAIT FOR 200 ns;
+	WAIT FOR 800 ns;
 	ASSERT FALSE REPORT "FIN" SEVERITY FAILURE;
 END PROCESS;
 
@@ -84,5 +63,5 @@ BEGIN
 	WAIT FOR 10 ns;
 	CLOCK <= '1';
 	WAIT FOR 10 ns;
-END PROCESS;                                                    
+END PROCESS;                                          
 END mini_cpu_arch;
