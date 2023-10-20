@@ -22,7 +22,7 @@ https://fpgasoftware.intel.com/eula.
 (header "graphic" (version "1.4"))
 (pin
 	(input)
-	(rect -40 264 128 280)
+	(rect -336 264 -168 280)
 	(text "INPUT" (rect 125 0 153 10)(font "Arial" (font_size 6)))
 	(text "CLOCK" (rect 5 0 42 12)(font "Arial" ))
 	(pt 168 8)
@@ -579,28 +579,6 @@ https://fpgasoftware.intel.com/eula.
 	)
 )
 (symbol
-	(rect 544 312 728 392)
-	(text "fake_rom" (rect 5 0 54 12)(font "Arial" ))
-	(text "inst1" (rect 8 64 32 76)(font "Intel Clear" ))
-	(port
-		(pt 0 32)
-		(input)
-		(text "address[15..0]" (rect 0 0 77 12)(font "Arial" ))
-		(text "address[15..0]" (rect 21 27 98 39)(font "Arial" ))
-		(line (pt 0 32)(pt 16 32)(line_width 3))
-	)
-	(port
-		(pt 184 32)
-		(output)
-		(text "Q[7..0]" (rect 0 0 37 12)(font "Arial" ))
-		(text "Q[7..0]" (rect 132 27 169 39)(font "Arial" ))
-		(line (pt 184 32)(pt 168 32)(line_width 3))
-	)
-	(drawing
-		(rectangle (rect 16 16 168 64))
-	)
-)
-(symbol
 	(rect 1216 432 1248 464)
 	(text "GND" (rect 8 16 30 26)(font "Arial" (font_size 6)))
 	(text "inst3" (rect 3 21 27 33)(font "Intel Clear" )(invisible))
@@ -681,33 +659,445 @@ https://fpgasoftware.intel.com/eula.
 		(pt 216 32)
 		(output)
 		(text "output[7..0]" (rect 0 0 63 12)(font "Arial" ))
-		(text "output[7..0]" (rect 142 27 195 39)(font "Arial" ))
+		(text "output[7..0]" (rect 142 27 205 39)(font "Arial" ))
 		(line (pt 216 32)(pt 200 32)(line_width 3))
 	)
 	(port
 		(pt 216 48)
 		(output)
 		(text "outputPC[15..0]" (rect 0 0 84 12)(font "Arial" ))
-		(text "outputPC[15..0]" (rect 124 43 195 55)(font "Arial" ))
+		(text "outputPC[15..0]" (rect 124 43 208 55)(font "Arial" ))
 		(line (pt 216 48)(pt 200 48)(line_width 3))
 	)
 	(port
 		(pt 216 64)
 		(output)
 		(text "updtBus[1..0]" (rect 0 0 73 12)(font "Arial" ))
-		(text "updtBus[1..0]" (rect 134 59 195 71)(font "Arial" ))
+		(text "updtBus[1..0]" (rect 134 59 207 71)(font "Arial" ))
 		(line (pt 216 64)(pt 200 64)(line_width 3))
 	)
 	(port
 		(pt 216 80)
 		(output)
 		(text "fetchE" (rect 0 0 34 12)(font "Arial" ))
-		(text "fetchE" (rect 167 75 195 87)(font "Arial" ))
+		(text "fetchE" (rect 167 75 201 87)(font "Arial" ))
 		(line (pt 216 80)(pt 200 80))
 	)
 	(drawing
 		(rectangle (rect 16 16 200 160))
 	)
+)
+(symbol
+	(rect -32 328 160 688)
+	(text "ALTSYNCRAM" (rect 56 8 161 25)(font "Arial" (font_size 10)))
+	(text "inst6" (rect 8 344 32 356)(font "Intel Clear" ))
+	(port
+		(pt 0 40)
+		(input)
+		(text "address_a[WIDTHAD_A-1..0]" (rect 24 32 208 46)(font "Arial" (font_size 8)))
+		(text "address_a[]" (rect 24 32 100 46)(font "Arial" (font_size 8)))
+		(line (pt 0 40)(pt 16 40)(line_width 3))
+	)
+	(port
+		(pt 0 88)
+		(input)
+		(text "wren_a" (rect 24 64 71 78)(font "Arial" (font_size 8)))
+		(text "wren_a" (rect 24 80 71 94)(font "Arial" (font_size 8)))
+		(line (pt 0 88)(pt 16 88))
+	)
+	(port
+		(pt 0 104)
+		(input)
+		(text "byteena_a[WIDTH_BYTEENA_A-1..0]" (rect 24 80 257 94)(font "Arial" (font_size 8)))
+		(text "byteena_a[]" (rect 24 96 101 110)(font "Arial" (font_size 8)))
+		(line (pt 0 104)(pt 16 104)(color 0 128 255)(line_width 3))
+	)
+	(port
+		(pt 0 160)
+		(input)
+		(text "data_b[WIDTH_B-1..0]" (rect 24 120 167 134)(font "Arial" (font_size 8)))
+		(text "data_b[]" (rect 24 152 78 166)(font "Arial" (font_size 8)))
+		(line (pt 0 160)(pt 16 160)(color 0 128 255)(line_width 3))
+	)
+	(port
+		(pt 0 176)
+		(input)
+		(text "rden_b" (rect 24 144 68 158)(font "Arial" (font_size 8)))
+		(text "rden_b" (rect 24 168 68 182)(font "Arial" (font_size 8)))
+		(line (pt 0 176)(pt 16 176))
+	)
+	(port
+		(pt 0 192)
+		(input)
+		(text "wren_b" (rect 24 160 71 174)(font "Arial" (font_size 8)))
+		(text "wren_b" (rect 24 184 71 198)(font "Arial" (font_size 8)))
+		(line (pt 0 192)(pt 16 192))
+	)
+	(port
+		(pt 0 208)
+		(input)
+		(text "byteena_b[WIDTH_BYTEENA_B-1..0]" (rect 24 176 257 190)(font "Arial" (font_size 8)))
+		(text "byteena_b[]" (rect 24 200 103 214)(font "Arial" (font_size 8)))
+		(line (pt 0 208)(pt 16 208)(color 0 128 255)(line_width 3))
+	)
+	(port
+		(pt 0 248)
+		(input)
+		(text "clock0" (rect 24 200 66 214)(font "Arial" (font_size 8)))
+		(text "clock0" (rect 24 240 66 254)(font "Arial" (font_size 8)))
+		(line (pt 0 248)(pt 16 248))
+	)
+	(port
+		(pt 0 264)
+		(input)
+		(text "clocken0" (rect 24 216 81 230)(font "Arial" (font_size 8)))
+		(text "clocken0" (rect 24 256 81 270)(font "Arial" (font_size 8)))
+		(line (pt 0 264)(pt 16 264))
+	)
+	(port
+		(pt 0 304)
+		(input)
+		(text "clock1" (rect 24 240 66 254)(font "Arial" (font_size 8)))
+		(text "clock1" (rect 24 296 66 310)(font "Arial" (font_size 8)))
+		(line (pt 0 304)(pt 16 304))
+	)
+	(port
+		(pt 0 320)
+		(input)
+		(text "clocken1" (rect 24 256 81 270)(font "Arial" (font_size 8)))
+		(text "clocken1" (rect 24 312 81 326)(font "Arial" (font_size 8)))
+		(line (pt 0 320)(pt 16 320))
+	)
+	(port
+		(pt 112 360)
+		(input)
+		(text "aclr0" (rect 104 312 118 345)(font "Arial" (font_size 8))(vertical))
+		(text "aclr0" (rect 104 312 118 345)(font "Arial" (font_size 8))(vertical))
+		(line (pt 112 360)(pt 112 344))
+	)
+	(port
+		(pt 128 360)
+		(input)
+		(text "aclr1" (rect 120 312 134 345)(font "Arial" (font_size 8))(vertical))
+		(text "aclr1" (rect 120 312 134 345)(font "Arial" (font_size 8))(vertical))
+		(line (pt 128 360)(pt 128 344))
+	)
+	(port
+		(pt 0 56)
+		(input)
+		(text "data_a[WIDTH_A-1..0]" (rect 24 48 167 62)(font "Arial" (font_size 8)))
+		(text "data_a[]" (rect 24 48 78 62)(font "Arial" (font_size 8)))
+		(line (pt 0 56)(pt 16 56)(color 0 128 255)(line_width 3))
+	)
+	(port
+		(pt 0 144)
+		(input)
+		(text "address_b[WIDTHAD_B-1..0]" (rect 24 104 208 118)(font "Arial" (font_size 8)))
+		(text "address_b[]" (rect 24 136 100 150)(font "Arial" (font_size 8)))
+		(line (pt 0 144)(pt 16 144)(color 0 128 255)(line_width 3))
+	)
+	(port
+		(pt 0 120)
+		(input)
+		(text "addressstall_a" (rect 24 96 117 110)(font "Arial" (font_size 8)))
+		(text "addressstall_a" (rect 24 112 117 126)(font "Arial" (font_size 8)))
+		(line (pt 0 120)(pt 16 120))
+		(unused)
+	)
+	(port
+		(pt 0 224)
+		(input)
+		(text "addressstall_b" (rect 24 200 117 214)(font "Arial" (font_size 8)))
+		(text "addressstall_b" (rect 24 216 117 230)(font "Arial" (font_size 8)))
+		(line (pt 0 224)(pt 16 224))
+		(unused)
+	)
+	(port
+		(pt 0 336)
+		(input)
+		(text "clocken3" (rect 24 328 81 342)(font "Arial" (font_size 8)))
+		(text "clocken3" (rect 24 328 81 342)(font "Arial" (font_size 8)))
+		(line (pt 0 336)(pt 16 336))
+	)
+	(port
+		(pt 0 280)
+		(input)
+		(text "clocken2" (rect 24 280 81 294)(font "Arial" (font_size 8)))
+		(text "clocken2" (rect 24 272 81 286)(font "Arial" (font_size 8)))
+		(line (pt 0 280)(pt 16 280))
+	)
+	(port
+		(pt 0 72)
+		(input)
+		(text "rden_a" (rect 24 64 68 78)(font "Arial" (font_size 8)))
+		(text "rden_a" (rect 24 64 68 78)(font "Arial" (font_size 8)))
+		(line (pt 0 72)(pt 16 72))
+	)
+	(port
+		(pt 192 56)
+		(output)
+		(text "q_a[WIDTH_A-1..0]" (rect 160 49 282 63)(font "Arial" (font_size 8)))
+		(text "q_a[]" (rect 152 49 185 63)(font "Arial" (font_size 8)))
+		(line (pt 176 56)(pt 192 56)(line_width 3))
+	)
+	(port
+		(pt 192 80)
+		(output)
+		(text "q_b[WIDTH_B-1..0]" (rect 144 72 266 86)(font "Arial" (font_size 8)))
+		(text "q_b[]" (rect 152 72 185 86)(font "Arial" (font_size 8)))
+		(line (pt 192 80)(pt 176 80)(line_width 3))
+	)
+	(port
+		(pt 192 104)
+		(output)
+		(text "eccstatus[2..0]" (rect 142 96 239 110)(font "Arial" (font_size 8)))
+		(text "eccstatus[]" (rect 118 96 191 110)(font "Arial" (font_size 8)))
+		(line (pt 192 104)(pt 176 104)(color 128 0 255)(line_width 3))
+	)
+	(parameter
+		"OUTDATA_ACLR_A"
+		"\"NONE\""
+		"Should aclr affect the output data register A?. Values are \"CLEAR0\",  \"CLEAR1\" or \"NONE\" (default)"
+		"\"NONE\"" "\"CLEAR0\"" 
+	)
+	(parameter
+		"WIDTH_A"
+		"8"
+		"Data width in bits of A port, any integer > 0"
+		(type "PARAMETER_SIGNED_DEC")	)
+	(parameter
+		"WIDTHAD_A"
+		"16"
+		"Number of address lines of A port, any integer > 0"
+	)
+	(parameter
+		"WIDTH_B"
+		"8"
+		"Data width in bits of B port, any integer > 0"
+	)
+	(parameter
+		"WIDTHAD_B"
+		"1"
+		"Number of address lines of B port, any integer > 0"
+	)
+	(parameter
+		"NUMWORDS_A"
+		"2^WIDTHAD_A"
+		"Number of memory words for A port, default is 2^WIDTHAD_A"
+	)
+	(parameter
+		"NUMWORDS_B"
+		"2^WIDTHAD_B"
+		"Number of memory words for port B, default is 2^WIDTHAD_B"
+	)
+	(parameter
+		"OPERATION_MODE"
+		"\"SINGLE_PORT\""
+		"Mode of operation of the ram. Values are \"ROM\", \"SINGLE_PORT\", \"DUAL_PORT\", \"BIDIR_DUAL_PORT\""
+		"\"ROM\"" "\"SINGLE_PORT\"" "\"DUAL_PORT\"" "\"BIDIR_DUAL_PORT\"" 
+	)
+	(parameter
+		"OUTDATA_REG_A"
+		"\"UNREGISTERED\""
+		"Should the output data A be registered? Values are \"CLOCK0\", \"CLOCK1\" or \"UNREGISTERED\" (default)"
+		"\"UNREGISTERED\"" "\"CLOCK0\"" "\"CLOCK1\"" 
+	)
+	(parameter
+		"ADDRESS_ACLR_A"
+		"\"NONE\""
+		"Should aclr affect the address register of port A? Values are \"CLEAR0\" or \"NONE\" (default)"
+		"\"NONE\"" "\"CLEAR0\"" 
+	)
+	(parameter
+		"WRCONTROL_ACLR_A"
+		"\"NONE\""
+		"Should aclr affect the write enable register of port A? Values are \"CLEAR0\" or \"NONE\" (default)"
+		"\"NONE\"" "\"CLEAR0\"" 
+	)
+	(parameter
+		"INDATA_ACLR_A"
+		"\"NONE\""
+		"Should aclr affect the write data register of port A?. Values are \"CLEAR0\" or \"NONE\"(default)"
+		"\"NONE\"" "\"CLEAR0\"" 
+	)
+	(parameter
+		"BYTEENA_ACLR_A"
+		"\"NONE\""
+		"Should aclr affect the byte enable register of port A? Values are \"CLEAR0\" or \"NONE\"(default)"
+		"\"NONE\"" "\"CLEAR0\"" 
+	)
+	(parameter
+		"WIDTH_BYTEENA_A"
+		"WIDTH_A / BYTE_SIZE"
+		"Width of the byte enable mask of port A. Value is equal to WIDTH_A / BYTE_SIZE"
+	)
+	(parameter
+		"WIDTH_BYTEENA_B"
+		"WIDTH_B / BYTE_SIZE"
+		"Width of the byte enable mask of port B. Value is equal to WIDTH_B / BYTE_SIZE"
+	)
+	(parameter
+		"RAM_BLOCK_TYPE"
+		"\"AUTO\""
+		"Which block type should the ram be placed? Values are \"M512\", \"M4K\", \"M-RAM\" or  \"AUTO\" (defaut, compiler automatically chooses the block type)"
+		"\"AUTO\"" "\"M512\"" "\"M4K\"" "\"M-RAM\"" 
+	)
+	(parameter
+		"BYTE_SIZE"
+		"8"
+		"Width of a byte for byte enables. Can be 1, 2, 4, 8(default) or 9"
+		"8" "1" "2" "4" "9" 
+	)
+	(parameter
+		"READ_DURING_WRITE_MODE_MIXED_PORTS"
+		"\"DONT_CARE\""
+		"Whats the expected output when reading and writing at the same address through different ports ?. Values are \"OLD_DATA\" or \"DONT_CARE\"(default)"
+		"\"DONT_CARE\"" "\"OLD_DATA\"" 
+	)
+	(parameter
+		"INIT_FILE"
+		"\"program.mif\""
+		"File containing initial contents of memory"
+	)
+	(parameter
+		"INIT_FILE_LAYOUT"
+		"\"PORT_A\""
+		"Layout of the INIT_FILE, is it based on \"PORT_A\" or \"PORT_B\""
+		"\"PORT_A\"" "\"PORT_B\"" 
+	)
+	(parameter
+		"MAXIMUM_DEPTH"
+		"0"
+		"Maximum depth of each slice of the ram being created, any integer > 0. Default is the maximum size allowed by the block type"
+	)
+	(parameter
+		"INDATA_REG_B"
+		"\"CLOCK1\""
+		"Clock used to register data input of port B. Values are \"CLOCK0\" or \"CLOCK1\" (default)"
+		"\"CLOCK1\"" "\"CLOCK0\"" 
+	)
+	(parameter
+		"WRCONTROL_WRADDRESS_REG_B"
+		"\"CLOCK1\""
+		"Clock used to register write enable and address registers of port B. Values are \"CLOCK0\" or \"CLOCK1\" (default)"
+		"\"CLOCK1\"" "\"CLOCK0\"" 
+	)
+	(parameter
+		"RDCONTROL_REG_B"
+		"\"CLOCK1\""
+		"Clock used to register read enable for port B. Values are \"CLOCK0\" or \"CLOCK1\" (default)"
+		"\"CLOCK1\"" "\"CLOCK0\"" 
+	)
+	(parameter
+		"ADDRESS_REG_B"
+		"\"CLOCK1\""
+		"Clock used to register the address for port B. Values are \"CLOCK0\" or \"CLOCK1\" (default)"
+		"\"CLOCK1\"" "\"CLOCK0\"" 
+	)
+	(parameter
+		"BYTEENA_REG_B"
+		"\"CLOCK1\""
+		"Clock used to register the byte enable masks for port B. Values are \"CLOCK0\" or \"CLOCK1\" (default)"
+		"\"CLOCK1\"" "\"CLOCK0\"" 
+	)
+	(parameter
+		"OUTDATA_REG_B"
+		"\"UNREGISTERED\""
+		"Should the output data of port B be registered?. Values are \"CLOCK0\", \"CLOCK1\" or \"UNREGISTERED\" (default)"
+		"\"UNREGISTERED\"" "\"CLOCK0\"" "\"CLOCK1\"" 
+	)
+	(parameter
+		"INDATA_ACLR_B"
+		"\"NONE\""
+		"Should aclr affect the write data register of port B?. Values are \"CLEAR0\", \"CLEAR1\" or \"NONE\"(default)"
+		"\"NONE\"" "\"CLEAR0\"" "\"CLEAR1\"" 
+	)
+	(parameter
+		"ADDRESS_ACLR_B"
+		"\"NONE\""
+		"Should aclr affect the address register of port B? Values are \"CLEAR0\", \"CLEAR1\" or \"NONE\" (default)"
+		"\"NONE\"" "\"CLEAR0\"" "\"CLEAR1\"" 
+	)
+	(parameter
+		"WRCONTROL_ACLR_B"
+		"\"NONE\""
+		"Should aclr affect the write enable register of port B? Values are \"CLEAR0\", \"CLEAR1\" or \"NONE\" (default)"
+		"\"NONE\"" "\"CLEAR0\"" "\"CLEAR1\"" 
+	)
+	(parameter
+		"OUTDATA_ACLR_B"
+		"\"NONE\""
+		"Should aclr affect the output data register B?. Values are \"CLEAR0\",  \"CLEAR1\" or \"NONE\" (default)"
+		"\"NONE\"" "\"CLEAR0\"" "\"CLEAR1\"" 
+	)
+	(parameter
+		"BYTEENA_ACLR_B"
+		"\"NONE\""
+		"Should aclr affect the byte enable register of port B? Values are \"CLEAR0\", \"CLEAR1\" or \"NONE\"(default)"
+		"\"NONE\"" "\"CLEAR0\"" "\"CLEAR1\"" 
+	)
+	(parameter
+		"RDCONTROL_ACLR_B"
+		"\"NONE\""
+		"Should aclr affect the read enable register of port B? Values are \"CLEAR0\", \"CLEAR1\" or \"NONE\" (default)"
+		"\"NONE\"" "\"CLEAR0\"" "\"CLEAR1\"" 
+	)
+	(parameter
+		"CLOCK_ENABLE_INPUT_A"
+		"\"NORMAL\""
+		"Should clock enable be used on the Input registers of port A? Values are \"NORMAL\"(default), \"ALTERNATE\" and \"BYPASS\""
+		"\"NORMAL\"" "\"BYPASS\"" 
+	)
+	(parameter
+		"CLOCK_ENABLE_OUTPUT_A"
+		"\"NORMAL\""
+		"Should clock enable be used on the Output registers of port A? Values are \"NORMAL\"(default) and \"BYPASS\""
+		"\"NORMAL\"" "\"BYPASS\"" 
+	)
+	(parameter
+		"CLOCK_ENABLE_INPUT_B"
+		"\"NORMAL\""
+		"Should clock enable be used on the Input registers of port B? Values are \"NORMAL\"(default), \"ALTERNATE\" and \"BYPASS\""
+		"\"NORMAL\"" "\"BYPASS\"" 
+	)
+	(parameter
+		"CLOCK_ENABLE_OUTPUT_B"
+		"\"NORMAL\""
+		"Should clock enable be used on the Output registers of port B? Values are \"NORMAL\"(default) and \"BYPASS\""
+		"\"NORMAL\"" "\"BYPASS\"" 
+	)
+	(parameter
+		"CLOCK_ENABLE_CORE_A"
+		"\"USE_INPUT_CLKEN\""
+		"Should clock enable be used on core of A? Choices are \"USE_INPUT_CLKEN\", \"NORMAL\", \"BYPASS\" and \"ALTERNATE\""
+	)
+	(parameter
+		"CLOCK_ENABLE_CORE_B"
+		"\"USE_INPUT_CLKEN\""
+		"Should clock enable be used on core of B? Choices are \"USE_INPUT_CLKEN\", \"NORMAL\", \"BYPASS\" and \"ALTERNATE\""
+	)
+	(parameter
+		"READ_DURING_WRITE_MODE_PORT_A"
+		"\"NEW_DATA_NO_NBE_READ\""
+		"What is the feed through mode, when read and write are happening at port A? Choices are \"NEW_DATA_NO_NBE_READ\", \"NEW_DATA_WITH_NBE_READ\", \"OLD_DATA\" and \"DONT_CARE\""
+	)
+	(parameter
+		"READ_DURING_WRITE_MODE_PORT_B"
+		"\"NEW_DATA_NO_NBE_READ\""
+		"What is the feed through mode, when read and write are happening at port B? Choices are \"NEW_DATA_NO_NBE_READ\", \"NEW_DATA_WITH_NBE_READ\" and \"OLD_DATA\""
+	)
+	(parameter
+		"ENABLE_ECC"
+		"\"FALSE\""
+		"Should the error checking and correction feature be enabled? Choices are \"TRUE\" and \"FALSE\""
+	)
+	(drawing
+		(line (pt 16 344)(pt 176 344))
+		(line (pt 16 24)(pt 176 24))
+		(line (pt 176 24)(pt 176 344))
+		(line (pt 16 24)(pt 16 344))
+	)
+	(annotation_block (parameter)(rect 160 -448 636 197))
 )
 (connector
 	(pt 520 528)
@@ -1092,35 +1482,6 @@ https://fpgasoftware.intel.com/eula.
 	(bus)
 )
 (connector
-	(pt 1056 304)
-	(pt 760 304)
-	(bus)
-)
-(connector
-	(text "PC[15..0]" (rect 474 328 518 340)(font "Intel Clear" ))
-	(pt 544 344)
-	(pt 472 344)
-	(bus)
-)
-(connector
-	(pt 760 304)
-	(pt 760 344)
-	(bus)
-)
-(connector
-	(pt 760 344)
-	(pt 728 344)
-	(bus)
-)
-(connector
-	(pt 128 272)
-	(pt 432 272)
-)
-(connector
-	(pt 432 272)
-	(pt 992 272)
-)
-(connector
 	(pt 1400 432)
 	(pt 1232 432)
 )
@@ -1168,6 +1529,40 @@ https://fpgasoftware.intel.com/eula.
 	(text "PC_IN[15..0]" (rect 1274 432 1334 444)(font "Intel Clear" ))
 	(pt 1400 448)
 	(pt 1264 448)
+	(bus)
+)
+(connector
+	(pt -32 576)
+	(pt -168 576)
+)
+(connector
+	(pt -168 576)
+	(pt -168 272)
+)
+(connector
+	(pt 432 272)
+	(pt 992 272)
+)
+(connector
+	(pt -168 272)
+	(pt 432 272)
+)
+(connector
+	(text "PC[15..0]" (rect -142 352 -98 364)(font "Intel Clear" ))
+	(pt -32 368)
+	(pt -144 368)
+	(bus)
+)
+(connector
+	(text "ROM_DATA[7..0]" (rect 160 368 241 380)(font "Intel Clear" ))
+	(pt 160 384)
+	(pt 224 384)
+	(bus)
+)
+(connector
+	(text "ROM_DATA[7..0]" (rect 770 288 851 300)(font "Intel Clear" ))
+	(pt 1056 304)
+	(pt 760 304)
 	(bus)
 )
 (junction (pt 432 272))
