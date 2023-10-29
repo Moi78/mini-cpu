@@ -33,24 +33,12 @@ begin
 			end if;
 		end if;
 	end process;
+		
+	op <= data_in(3 downto 0) when fetch_counter = 0;
+	pline_sel <= data_in(7 downto 4) when fetch_counter = 0;
 	
-	process (fetch_counter)
-	begin
-			-- OP Fetching
-			if fetch_counter = 0 then
-				-- Fetching op code
-				pline_sel <= data_in(7 downto 4);
-				op <= data_in(3 downto 0);
-			elsif fetch_counter = 1 then
-				-- Fetching operand a
-				operand_a <= data_in;
-				
-			elsif fetch_counter = 2 then
-				-- Fetching operand b
-				operand_b <= data_in;
-				
-			end if;
-	end process;
+	operand_a <= data_in when fetch_counter = 1;
+	operand_b <= data_in when fetch_counter = 2;
 	
 	with fetch_counter select iPline_en <=
 		'1' when 3 | 4,
