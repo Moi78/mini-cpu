@@ -9,16 +9,12 @@ entity decoder2 is
 	);
 end entity decoder2;
 
-architecture a_decoder of decoder2 is
-	signal UAddr : unsigned(1 downto 0) := to_unsigned(0, 2);
-	signal iQ	 : unsigned(3 downto 0);
+architecture a_decoder2 of decoder2 is
 begin
-	process (UAddr)
-	begin 
-		iQ <= to_unsigned(0, 4);
-		iQ(to_integer(UAddr)) <= '1';
-	end process;
-	
-	UAddr <= unsigned(addr);
-	Q <= std_logic_vector(iQ);
+	DEC : entity work.decoder(a_decoder)
+	generic map (size => 2)
+	port map(
+		addr => addr,
+		Q => Q
+	);
 end architecture;

@@ -17,7 +17,7 @@ entity memory_pipeline is
 		
 		output	: out std_logic_vector(7 downto 0);
 		outputPC	: out std_logic_vector(15 downto 0);
-		updtBus	: out std_logic_vector(1 downto 0) := "00";
+		updtBus	: out std_logic_vector(2 downto 0) := "000";
 		
 		fetchE	: out std_logic := '0'
 	);
@@ -27,7 +27,8 @@ architecture a_memory_pline of memory_pipeline is
 	type etat is (Idle, Exec, Update);
 	signal currentState : etat := Idle;
 	signal iOutput		  : std_logic_vector(7 downto 0);
-	signal iSelector	  : std_logic_vector(1 downto 0);
+	signal iJump		  : std_logic_vector(15 downto 0);
+	signal iSelector	  : std_logic_vector(2 downto 0);
 begin
 	process
 	begin
@@ -57,24 +58,32 @@ begin
 				if op = "0001" then -- Mov REG to REG
 					-- Source select
 					case iSelector is
-						when "01" => iOutput <= i_regA;
-						when "10" => iOutput <= i_regB;
-						when "11" => iOutput <= i_regC;
+						when "001" => iOutput <= i_regA;
+						when "010" => iOutput <= i_regB;
+						when "011" => iOutput <= i_regC;
 						when others => iOutput <= "00000000";
 					end case;
 				
 				elsif op = "0110" then -- Load ctant in register
 					iOutput <= opDataH;
+					
+				elsif op = "0111" then -- Jump to ctant address
+					iJump(15 downto 8) <= opDataH;
+					iJump(7 downto 0) <= opDataL;
+	
 				end if;
 			when Update =>
 				fetchE <= '0';
 				-- Update  bus
 				if op = "0001" or op = "0110" then -- Mov REG to REG or Load ctant
-					updtBus <= opDataL(1 downto 0);
+					updtBus <= opDataL(2 downto 0);
+				elsif op = "0111" then
+					updtBus <= "100";
 				end if;
 		end case;
 	end process;
 	
 	output <= iOutput;
-	iSelector <= opDataH(1 downto 0);
+	outputPC <= iJump;
+	iSelector <= opDataH(2 downto 0);
 end architecture a_memory_pline;

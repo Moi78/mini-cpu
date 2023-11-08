@@ -97,8 +97,8 @@ https://fpgasoftware.intel.com/eula.
 	(port
 		(pt 216 64)
 		(output)
-		(text "updtBus[1..0]" (rect 0 0 50 12)(font "Arial" ))
-		(text "updtBus[1..0]" (rect 145 59 195 71)(font "Arial" ))
+		(text "updtBus[2..0]" (rect 0 0 51 12)(font "Arial" ))
+		(text "updtBus[2..0]" (rect 144 59 195 71)(font "Arial" ))
 		(line (pt 216 64)(pt 200 64)(line_width 3))
 	)
 	(port

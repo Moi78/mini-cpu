@@ -18,7 +18,7 @@
 -- suit user's needs .Comments are provided in each section to help the user  
 -- fill out necessary details.                                                
 -- ***************************************************************************
--- Generated on "10/29/2023 14:22:22"
+-- Generated on "11/08/2023 11:33:27"
                                                             
 -- Vhdl Test Bench template for design  :  mini_cpu
 -- 
@@ -53,7 +53,7 @@ BEGIN
 	);
 PROCESS
 BEGIN
-	WAIT FOR 800 ns;
+	WAIT FOR 1600 ns;
 	ASSERT FALSE REPORT "FIN" SEVERITY FAILURE;
 END PROCESS;
 
@@ -63,5 +63,5 @@ BEGIN
 	WAIT FOR 10 ns;
 	CLOCK <= '1';
 	WAIT FOR 10 ns;
-END PROCESS;                                            
+END PROCESS;                                           
 END mini_cpu_arch;
