@@ -14,12 +14,14 @@ entity memory_pipeline is
 		i_regA	: in std_logic_vector(7 downto 0);
 		i_regB	: in std_logic_vector(7 downto 0);
 		i_regC	: in std_logic_vector(7 downto 0);
+		i_mem		: in std_logic_vector(7 downto 0);
 		
 		output	: out std_logic_vector(7 downto 0);
 		outputPC	: out std_logic_vector(15 downto 0);
 		updtBus	: out std_logic_vector(2 downto 0) := "000";
 		
-		fetchE	: out std_logic := '0'
+		fetchE	: out std_logic := '0';
+		outAddr	: out std_logic_vector(15 downto 0)
 	);
 end entity memory_pipeline;
 
