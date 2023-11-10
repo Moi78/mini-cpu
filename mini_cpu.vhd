@@ -15,7 +15,7 @@
 
 -- PROGRAM		"Quartus Prime"
 -- VERSION		"Version 22.1std.1 Build 917 02/14/2023 SC Lite Edition"
--- CREATED		"Fri Nov 10 09:14:40 2023"
+-- CREATED		"Fri Nov 10 10:48:57 2023"
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.all; 
@@ -54,15 +54,6 @@ COMPONENT decoder3
 	);
 END COMPONENT;
 
-COMPONENT ram
-	PORT(wren : IN STD_LOGIC;
-		 clock : IN STD_LOGIC;
-		 address : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
-		 data : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
-		 q : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
-	);
-END COMPONENT;
-
 COMPONENT math_pipeline
 	PORT(clk : IN STD_LOGIC;
 		 en : IN STD_LOGIC;
@@ -88,6 +79,7 @@ COMPONENT memory_pipeline
 		 opDataH : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
 		 opDataL : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
 		 fetchE : OUT STD_LOGIC;
+		 memRd : OUT STD_LOGIC;
 		 outAddr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		 output : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		 outputPC : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -119,6 +111,15 @@ GENERIC (reg_size : INTEGER
 	);
 END COMPONENT;
 
+COMPONENT ram
+	PORT(wren : IN STD_LOGIC;
+		 clock : IN STD_LOGIC;
+		 address : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
+		 data : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
+		 q : OUT STD_LOGIC_VECTOR(7 DOWNTO 0)
+	);
+END COMPONENT;
+
 COMPONENT rom
 	PORT(clock : IN STD_LOGIC;
 		 address : IN STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -128,6 +129,7 @@ END COMPONENT;
 
 SIGNAL	dataA :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	dataB :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	memRead :  STD_LOGIC;
 SIGNAL	outAddr :  STD_LOGIC_VECTOR(15 DOWNTO 0);
 SIGNAL	outMemPline :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	PC :  STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -137,22 +139,23 @@ SIGNAL	regC :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	ROM_DATA :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	selector :  STD_LOGIC_VECTOR(15 DOWNTO 0);
 SIGNAL	updtSelector :  STD_LOGIC_VECTOR(7 DOWNTO 0);
-SIGNAL	SYNTHESIZED_WIRE_22 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_23 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_2 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_4 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
-SIGNAL	SYNTHESIZED_WIRE_23 :  STD_LOGIC;
+SIGNAL	SYNTHESIZED_WIRE_24 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_6 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_8 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_9 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_10 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_11 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_12 :  STD_LOGIC;
-SIGNAL	SYNTHESIZED_WIRE_24 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
-SIGNAL	SYNTHESIZED_WIRE_25 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_25 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_26 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_27 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_16 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_20 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_21 :  STD_LOGIC;
+SIGNAL	SYNTHESIZED_WIRE_22 :  STD_LOGIC;
 
 
 BEGIN 
@@ -163,23 +166,23 @@ b2v_A_Register : reg
 GENERIC MAP(size => 8
 			)
 PORT MAP(en => updtSelector(1),
-		 data_in => SYNTHESIZED_WIRE_22,
-		 data_out => SYNTHESIZED_WIRE_25);
+		 data_in => SYNTHESIZED_WIRE_23,
+		 data_out => SYNTHESIZED_WIRE_26);
 
 
 b2v_B_Register : reg
 GENERIC MAP(size => 8
 			)
 PORT MAP(en => updtSelector(2),
-		 data_in => SYNTHESIZED_WIRE_22,
-		 data_out => SYNTHESIZED_WIRE_26);
+		 data_in => SYNTHESIZED_WIRE_23,
+		 data_out => SYNTHESIZED_WIRE_27);
 
 
 b2v_C_Register : reg
 GENERIC MAP(size => 8
 			)
 PORT MAP(en => SYNTHESIZED_WIRE_2,
-		 data_in => SYNTHESIZED_WIRE_22,
+		 data_in => SYNTHESIZED_WIRE_23,
 		 data_out => regC);
 
 
@@ -188,7 +191,7 @@ PORT MAP(addr => SYNTHESIZED_WIRE_4,
 		 Q => selector);
 
 
-SYNTHESIZED_WIRE_12 <= SYNTHESIZED_WIRE_23 AND selector(1);
+SYNTHESIZED_WIRE_12 <= SYNTHESIZED_WIRE_24 AND selector(1);
 
 
 b2v_inst1 : decoder3
@@ -196,21 +199,16 @@ PORT MAP(addr => SYNTHESIZED_WIRE_6,
 		 Q => updtSelector);
 
 
-SYNTHESIZED_WIRE_16 <= SYNTHESIZED_WIRE_23 AND selector(2);
-
-
-b2v_inst3 : ram
-PORT MAP(wren => updtSelector(5),
-		 clock => CLOCK,
-		 address => outAddr,
-		 data => outMemPline,
-		 q => RAM_DATA);
+SYNTHESIZED_WIRE_16 <= SYNTHESIZED_WIRE_24 AND selector(2);
 
 
 SYNTHESIZED_WIRE_20 <= SYNTHESIZED_WIRE_8 OR SYNTHESIZED_WIRE_9;
 
 
-SYNTHESIZED_WIRE_22 <= outMemPline OR SYNTHESIZED_WIRE_10;
+SYNTHESIZED_WIRE_23 <= outMemPline OR SYNTHESIZED_WIRE_10;
+
+
+SYNTHESIZED_WIRE_22 <= CLOCK OR memRead;
 
 
 SYNTHESIZED_WIRE_2 <= updtSelector(3) OR SYNTHESIZED_WIRE_11;
@@ -219,9 +217,9 @@ SYNTHESIZED_WIRE_2 <= updtSelector(3) OR SYNTHESIZED_WIRE_11;
 b2v_math_pline : math_pipeline
 PORT MAP(clk => CLOCK,
 		 en => SYNTHESIZED_WIRE_12,
-		 op => SYNTHESIZED_WIRE_24,
-		 regA => SYNTHESIZED_WIRE_25,
-		 regB => SYNTHESIZED_WIRE_26,
+		 op => SYNTHESIZED_WIRE_25,
+		 regA => SYNTHESIZED_WIRE_26,
+		 regB => SYNTHESIZED_WIRE_27,
 		 readR => READSIG,
 		 writeR => SYNTHESIZED_WIRE_11,
 		 fetchE => SYNTHESIZED_WIRE_9,
@@ -233,13 +231,14 @@ b2v_memory_pline : memory_pipeline
 PORT MAP(clk => CLOCK,
 		 en => SYNTHESIZED_WIRE_16,
 		 i_mem => RAM_DATA,
-		 i_regA => SYNTHESIZED_WIRE_25,
-		 i_regB => SYNTHESIZED_WIRE_26,
+		 i_regA => SYNTHESIZED_WIRE_26,
+		 i_regB => SYNTHESIZED_WIRE_27,
 		 i_regC => regC,
-		 op => SYNTHESIZED_WIRE_24,
+		 op => SYNTHESIZED_WIRE_25,
 		 opDataH => dataB,
 		 opDataL => dataA,
 		 fetchE => SYNTHESIZED_WIRE_8,
+		 memRd => memRead,
 		 outAddr => outAddr,
 		 output => outMemPline,
 		 outputPC => PC_IN,
@@ -250,9 +249,9 @@ b2v_op_fetcher : fetcher
 PORT MAP(clk => CLOCK,
 		 fetch_en => SYNTHESIZED_WIRE_20,
 		 data_in => ROM_DATA,
-		 pline_en => SYNTHESIZED_WIRE_23,
+		 pline_en => SYNTHESIZED_WIRE_24,
 		 pc_en => SYNTHESIZED_WIRE_21,
-		 op => SYNTHESIZED_WIRE_24,
+		 op => SYNTHESIZED_WIRE_25,
 		 operand_a => dataA,
 		 operand_b => dataB,
 		 pline_sel => SYNTHESIZED_WIRE_4);
@@ -266,6 +265,14 @@ PORT MAP(clock => CLOCK,
 		 update => updtSelector(4),
 		 inData => PC_IN,
 		 outData => PC);
+
+
+b2v_ram_block : ram
+PORT MAP(wren => updtSelector(5),
+		 clock => SYNTHESIZED_WIRE_22,
+		 address => outAddr,
+		 data => outMemPline,
+		 q => RAM_DATA);
 
 
 b2v_rom_block : rom

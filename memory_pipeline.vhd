@@ -21,7 +21,8 @@ entity memory_pipeline is
 		updtBus	: out std_logic_vector(2 downto 0) := "000";
 		
 		fetchE	: out std_logic := '0';
-		outAddr	: out std_logic_vector(15 downto 0)
+		outAddr	: out std_logic_vector(15 downto 0) := (others => '0');
+		memRd		: out std_logic := '0'
 	);
 end entity memory_pipeline;
 
@@ -54,6 +55,7 @@ begin
 				fetchE <= '0';
 				updtBus <= (others => '0');
 				iOutput <= (others => '0');
+				memRd <= '0';
 			when Exec =>
 				fetchE <= '1';
 				
@@ -65,7 +67,17 @@ begin
 						when "011" => iOutput <= i_regC;
 						when others => iOutput <= "00000000";
 					end case;
+				elsif op = "0010" then -- Mem to Reg A
+					outAddr(15 downto 8) <= opDataH;
+					outAddr(7 downto 0) <= opDataL;
+					memRd <= '1';
 				
+					iOutput <= i_mem;
+				elsif op = "0011" then -- Reg A to Mem
+					outAddr(15 downto 8) <= opDataH;
+					outAddr(7 downto 0) <= opDataL;
+					
+					iOutput <= i_regA;
 				elsif op = "0110" then -- Load ctant in register
 					iOutput <= opDataH;
 					
@@ -79,7 +91,12 @@ begin
 				-- Update  bus
 				if op = "0001" or op = "0110" then -- Mov REG to REG or Load ctant
 					updtBus <= opDataL(2 downto 0);
-				elsif op = "0111" then
+				elsif op = "0010" then -- Mov Mem to Reg A
+					memRd <= '0';
+					updtBus <= "001";
+				elsif op = "0011" then -- Mov Reg A to Mem
+					updtBus <= "101";
+				elsif op = "0111" then -- Jump to ctant address
 					updtBus <= "100";
 				end if;
 		end case;
