@@ -27,7 +27,7 @@ entity memory_pipeline is
 end entity memory_pipeline;
 
 architecture a_memory_pline of memory_pipeline is
-	type etat is (Idle, Exec, Update);
+	type etat is (Idle, Exec, LongUpdt, Update);
 	signal currentState : etat := Idle;
 	signal iOutput		  : std_logic_vector(7 downto 0);
 	signal iJump		  : std_logic_vector(15 downto 0);
@@ -41,6 +41,12 @@ begin
 					when Idle =>
 						currentState <= Exec;
 					when Exec =>
+						if op = "0011" then
+							currentState <= LongUpdt;
+						else
+							currentState <= Update;
+						end if;
+					when LongUpdt =>
 						currentState <= Update;
 					when Update =>
 						currentState <= Idle;
@@ -86,6 +92,10 @@ begin
 					iJump(7 downto 0) <= opDataL;
 	
 				end if;
+			when LongUpdt =>
+				if op = "0011" then -- Mov Reg A to Mem
+					updtBus <= "101";
+				end if;
 			when Update =>
 				fetchE <= '0';
 				-- Update  bus
@@ -94,8 +104,6 @@ begin
 				elsif op = "0010" then -- Mov Mem to Reg A
 					memRd <= '0';
 					updtBus <= "001";
-				elsif op = "0011" then -- Mov Reg A to Mem
-					updtBus <= "101";
 				elsif op = "0111" then -- Jump to ctant address
 					updtBus <= "100";
 				end if;
