@@ -77,7 +77,6 @@ begin
 					outAddr(15 downto 8) <= opDataH;
 					outAddr(7 downto 0) <= opDataL;
 					
-					iOutput <= i_mem;
 					fetchMem <= '1';
 				elsif op = "0011" then -- Reg A to Mem
 					outAddr(15 downto 8) <= opDataH;
@@ -94,18 +93,18 @@ begin
 	
 				end if;
 			when LongUpdt =>
-				if op = "0010" then -- Mov mem to RegA
-					iOutput <= i_mem;
-				elsif op = "0011" then -- Mov RegA to Mem
+				if op = "0011" then -- Mov RegA to Mem
 					iOutput <= i_regA;
 					updtBus <= "101";
 				end if;
 			when Update =>
 				fetchE <= '0';
+				fetchMem <= '0';
 				-- Update  bus
 				if op = "0001" or op = "0110" then -- Mov REG to REG or Load ctant
 					updtBus <= opDataL(2 downto 0);
 				elsif op = "0010" then -- Mov Mem to RegA
+					iOutput <= i_mem;
 					updtBus <= "001";
 				elsif op = "0011" then
 					updtBus <= "000";
