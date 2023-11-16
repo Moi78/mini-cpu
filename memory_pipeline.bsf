@@ -125,8 +125,8 @@ https://fpgasoftware.intel.com/eula.
 	(port
 		(pt 216 112)
 		(output)
-		(text "memRd" (rect 0 0 34 12)(font "Arial" ))
-		(text "memRd" (rect 161 107 195 119)(font "Arial" ))
+		(text "fetchMem" (rect 0 0 41 12)(font "Arial" ))
+		(text "fetchMem" (rect 154 107 195 119)(font "Arial" ))
 		(line (pt 216 112)(pt 200 112)(line_width 1))
 	)
 	(drawing

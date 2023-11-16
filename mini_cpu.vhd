@@ -15,7 +15,7 @@
 
 -- PROGRAM		"Quartus Prime"
 -- VERSION		"Version 22.1std.1 Build 917 02/14/2023 SC Lite Edition"
--- CREATED		"Fri Nov 10 11:45:09 2023"
+-- CREATED		"Wed Nov 15 09:27:10 2023"
 
 LIBRARY ieee;
 USE ieee.std_logic_1164.all; 
@@ -97,7 +97,7 @@ COMPONENT memory_pipeline
 		 opDataH : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
 		 opDataL : IN STD_LOGIC_VECTOR(7 DOWNTO 0);
 		 fetchE : OUT STD_LOGIC;
-		 memRd : OUT STD_LOGIC;
+		 fetchMem : OUT STD_LOGIC;
 		 outAddr : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
 		 output : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
 		 outputPC : OUT STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -149,8 +149,7 @@ SIGNAL	addrBus :  STD_LOGIC_VECTOR(15 DOWNTO 0);
 SIGNAL	DATA_OUT :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	dataA :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	dataB :  STD_LOGIC_VECTOR(7 DOWNTO 0);
-SIGNAL	fe :  STD_LOGIC;
-SIGNAL	memRead :  STD_LOGIC;
+SIGNAL	fm :  STD_LOGIC;
 SIGNAL	outAddr :  STD_LOGIC_VECTOR(15 DOWNTO 0);
 SIGNAL	outMemPline :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	PC :  STD_LOGIC_VECTOR(15 DOWNTO 0);
@@ -160,23 +159,23 @@ SIGNAL	regC :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	ROM_DATA :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	selector :  STD_LOGIC_VECTOR(15 DOWNTO 0);
 SIGNAL	updtSelector :  STD_LOGIC_VECTOR(7 DOWNTO 0);
-SIGNAL	SYNTHESIZED_WIRE_24 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_23 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_2 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_4 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_5 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
-SIGNAL	SYNTHESIZED_WIRE_25 :  STD_LOGIC;
+SIGNAL	SYNTHESIZED_WIRE_24 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_7 :  STD_LOGIC_VECTOR(2 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_9 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_10 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_11 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_12 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_13 :  STD_LOGIC;
-SIGNAL	SYNTHESIZED_WIRE_26 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_25 :  STD_LOGIC_VECTOR(3 DOWNTO 0);
+SIGNAL	SYNTHESIZED_WIRE_26 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_27 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
-SIGNAL	SYNTHESIZED_WIRE_28 :  STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL	SYNTHESIZED_WIRE_17 :  STD_LOGIC;
 SIGNAL	SYNTHESIZED_WIRE_21 :  STD_LOGIC;
-SIGNAL	SYNTHESIZED_WIRE_29 :  STD_LOGIC;
+SIGNAL	SYNTHESIZED_WIRE_22 :  STD_LOGIC;
 
 
 BEGIN 
@@ -187,14 +186,14 @@ b2v_A_Register : reg
 GENERIC MAP(size => 8
 			)
 PORT MAP(en => updtSelector(1),
-		 data_in => SYNTHESIZED_WIRE_24,
-		 data_out => SYNTHESIZED_WIRE_27);
+		 data_in => SYNTHESIZED_WIRE_23,
+		 data_out => SYNTHESIZED_WIRE_26);
 
 
 b2v_addrMux : bus_mux2
 GENERIC MAP(busSize => 16
 			)
-PORT MAP(sel => fe,
+PORT MAP(sel => fm,
 		 busA => PC,
 		 busB => outAddr,
 		 Q => addrBus);
@@ -204,15 +203,15 @@ b2v_B_Register : reg
 GENERIC MAP(size => 8
 			)
 PORT MAP(en => updtSelector(2),
-		 data_in => SYNTHESIZED_WIRE_24,
-		 data_out => SYNTHESIZED_WIRE_28);
+		 data_in => SYNTHESIZED_WIRE_23,
+		 data_out => SYNTHESIZED_WIRE_27);
 
 
 b2v_C_Register : reg
 GENERIC MAP(size => 8
 			)
 PORT MAP(en => SYNTHESIZED_WIRE_2,
-		 data_in => SYNTHESIZED_WIRE_24,
+		 data_in => SYNTHESIZED_WIRE_23,
 		 data_out => regC);
 
 
@@ -228,7 +227,7 @@ PORT MAP(addr => SYNTHESIZED_WIRE_5,
 		 Q => selector);
 
 
-SYNTHESIZED_WIRE_13 <= SYNTHESIZED_WIRE_25 AND selector(1);
+SYNTHESIZED_WIRE_13 <= SYNTHESIZED_WIRE_24 AND selector(1);
 
 
 b2v_inst1 : decoder3
@@ -240,16 +239,13 @@ SYNTHESIZED_WIRE_4 <= NOT(addrBus(15));
 
 
 
-SYNTHESIZED_WIRE_17 <= SYNTHESIZED_WIRE_25 AND selector(2);
+SYNTHESIZED_WIRE_17 <= SYNTHESIZED_WIRE_24 AND selector(2);
 
 
-fe <= SYNTHESIZED_WIRE_9 OR SYNTHESIZED_WIRE_10;
+SYNTHESIZED_WIRE_21 <= SYNTHESIZED_WIRE_9 OR SYNTHESIZED_WIRE_10;
 
 
-SYNTHESIZED_WIRE_24 <= outMemPline OR SYNTHESIZED_WIRE_11;
-
-
-SYNTHESIZED_WIRE_29 <= CLOCK OR memRead;
+SYNTHESIZED_WIRE_23 <= outMemPline OR SYNTHESIZED_WIRE_11;
 
 
 SYNTHESIZED_WIRE_2 <= updtSelector(3) OR SYNTHESIZED_WIRE_12;
@@ -258,9 +254,9 @@ SYNTHESIZED_WIRE_2 <= updtSelector(3) OR SYNTHESIZED_WIRE_12;
 b2v_math_pline : math_pipeline
 PORT MAP(clk => CLOCK,
 		 en => SYNTHESIZED_WIRE_13,
-		 op => SYNTHESIZED_WIRE_26,
-		 regA => SYNTHESIZED_WIRE_27,
-		 regB => SYNTHESIZED_WIRE_28,
+		 op => SYNTHESIZED_WIRE_25,
+		 regA => SYNTHESIZED_WIRE_26,
+		 regB => SYNTHESIZED_WIRE_27,
 		 readR => READSIG,
 		 writeR => SYNTHESIZED_WIRE_12,
 		 fetchE => SYNTHESIZED_WIRE_10,
@@ -272,14 +268,14 @@ b2v_memory_pline : memory_pipeline
 PORT MAP(clk => CLOCK,
 		 en => SYNTHESIZED_WIRE_17,
 		 i_mem => DATA_OUT,
-		 i_regA => SYNTHESIZED_WIRE_27,
-		 i_regB => SYNTHESIZED_WIRE_28,
+		 i_regA => SYNTHESIZED_WIRE_26,
+		 i_regB => SYNTHESIZED_WIRE_27,
 		 i_regC => regC,
-		 op => SYNTHESIZED_WIRE_26,
+		 op => SYNTHESIZED_WIRE_25,
 		 opDataH => dataB,
 		 opDataL => dataA,
 		 fetchE => SYNTHESIZED_WIRE_9,
-		 memRd => memRead,
+		 fetchMem => fm,
 		 outAddr => outAddr,
 		 output => outMemPline,
 		 outputPC => PC_IN,
@@ -288,11 +284,11 @@ PORT MAP(clk => CLOCK,
 
 b2v_op_fetcher : fetcher
 PORT MAP(clk => CLOCK,
-		 fetch_en => fe,
+		 fetch_en => SYNTHESIZED_WIRE_21,
 		 data_in => DATA_OUT,
-		 pline_en => SYNTHESIZED_WIRE_25,
-		 pc_en => SYNTHESIZED_WIRE_21,
-		 op => SYNTHESIZED_WIRE_26,
+		 pline_en => SYNTHESIZED_WIRE_24,
+		 pc_en => SYNTHESIZED_WIRE_22,
+		 op => SYNTHESIZED_WIRE_25,
 		 operand_a => dataA,
 		 operand_b => dataB,
 		 pline_sel => SYNTHESIZED_WIRE_5);
@@ -302,7 +298,7 @@ b2v_program_counter : increment_reg
 GENERIC MAP(reg_size => 16
 			)
 PORT MAP(clock => CLOCK,
-		 incr_en => SYNTHESIZED_WIRE_21,
+		 incr_en => SYNTHESIZED_WIRE_22,
 		 update => updtSelector(4),
 		 inData => PC_IN,
 		 outData => PC);
@@ -310,14 +306,14 @@ PORT MAP(clock => CLOCK,
 
 b2v_ram_block : ram
 PORT MAP(wren => updtSelector(5),
-		 clock => SYNTHESIZED_WIRE_29,
+		 clock => CLOCK,
 		 address => addrBus,
 		 data => outMemPline,
 		 q => RAM_DATA);
 
 
 b2v_rom_block : rom
-PORT MAP(clock => SYNTHESIZED_WIRE_29,
+PORT MAP(clock => CLOCK,
 		 address => addrBus,
 		 q => ROM_DATA);
 

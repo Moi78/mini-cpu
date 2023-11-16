@@ -597,7 +597,7 @@ https://fpgasoftware.intel.com/eula.
 		(pt 280 32)
 		(output)
 		(text "outData[(reg_size-1)..0]" (rect 0 0 123 13)(font "Arial" ))
-		(text "outData[(reg_size-1)..0]" (rect 155 27 259 40)(font "Arial" ))
+		(text "outData[(reg_size-1)..0]" (rect 155 27 278 40)(font "Arial" ))
 		(line (pt 280 32)(pt 264 32)(line_width 3))
 	)
 	(parameter
@@ -726,6 +726,109 @@ https://fpgasoftware.intel.com/eula.
 	)
 )
 (symbol
+	(rect 560 184 608 216)
+	(text "NOT" (rect 1 0 21 10)(font "Arial" (font_size 6)))
+	(text "inst10" (rect 3 21 37 34)(font "Intel Clear" ))
+	(port
+		(pt 0 16)
+		(input)
+		(text "IN" (rect 2 7 16 19)(font "Courier New" (bold))(invisible))
+		(text "IN" (rect 2 7 16 19)(font "Courier New" (bold))(invisible))
+		(line (pt 0 16)(pt 13 16))
+	)
+	(port
+		(pt 48 16)
+		(output)
+		(text "OUT" (rect 32 7 53 19)(font "Courier New" (bold))(invisible))
+		(text "OUT" (rect 32 7 53 19)(font "Courier New" (bold))(invisible))
+		(line (pt 39 16)(pt 48 16))
+	)
+	(drawing
+		(line (pt 13 25)(pt 13 7))
+		(line (pt 13 7)(pt 31 16))
+		(line (pt 13 25)(pt 31 16))
+		(circle (rect 31 12 39 20))
+	)
+)
+(symbol
+	(rect -168 80 80 192)
+	(text "bus_mux2" (rect 5 0 60 13)(font "Arial" ))
+	(text "addrMux" (rect 8 96 55 109)(font "Intel Clear" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "busA[(bussize-1)..0]" (rect 0 0 105 13)(font "Arial" ))
+		(text "busA[(bussize-1)..0]" (rect 21 27 126 40)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32)(line_width 3))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "busB[(bussize-1)..0]" (rect 0 0 105 13)(font "Arial" ))
+		(text "busB[(bussize-1)..0]" (rect 21 43 126 56)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 3))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "sel" (rect 0 0 15 13)(font "Arial" ))
+		(text "sel" (rect 21 59 36 72)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64))
+	)
+	(port
+		(pt 248 32)
+		(output)
+		(text "Q[(bussize-1)..0]" (rect 0 0 87 13)(font "Arial" ))
+		(text "Q[(bussize-1)..0]" (rect 154 27 241 40)(font "Arial" ))
+		(line (pt 248 32)(pt 232 32)(line_width 3))
+	)
+	(parameter
+		"busSize"
+		"16"
+		""
+		(type "PARAMETER_SIGNED_DEC")	)
+	(drawing
+		(rectangle (rect 16 16 232 96))
+	)
+	(annotation_block (parameter)(rect -168 48 6 78))
+)
+(symbol
+	(rect 616 8 784 120)
+	(text "bus_mux2_8b" (rect 5 0 79 13)(font "Arial" ))
+	(text "dataMux" (rect 8 96 54 109)(font "Intel Clear" ))
+	(port
+		(pt 0 32)
+		(input)
+		(text "busA[7..0]" (rect 0 0 53 13)(font "Arial" ))
+		(text "busA[7..0]" (rect 21 27 74 40)(font "Arial" ))
+		(line (pt 0 32)(pt 16 32)(line_width 3))
+	)
+	(port
+		(pt 0 48)
+		(input)
+		(text "busB[7..0]" (rect 0 0 53 13)(font "Arial" ))
+		(text "busB[7..0]" (rect 21 43 74 56)(font "Arial" ))
+		(line (pt 0 48)(pt 16 48)(line_width 3))
+	)
+	(port
+		(pt 0 64)
+		(input)
+		(text "sel" (rect 0 0 15 13)(font "Arial" ))
+		(text "sel" (rect 21 59 36 72)(font "Arial" ))
+		(line (pt 0 64)(pt 16 64))
+	)
+	(port
+		(pt 168 32)
+		(output)
+		(text "Q[7..0]" (rect 0 0 35 13)(font "Arial" ))
+		(text "Q[7..0]" (rect 118 27 153 40)(font "Arial" ))
+		(line (pt 168 32)(pt 152 32)(line_width 3))
+	)
+	(drawing
+		(rectangle (rect 16 16 152 96))
+	)
+)
+(symbol
 	(rect 520 656 736 864)
 	(text "memory_pipeline" (rect 5 0 95 13)(font "Arial" ))
 	(text "memory_pline" (rect 8 192 82 205)(font "Arial" ))
@@ -830,148 +933,12 @@ https://fpgasoftware.intel.com/eula.
 	(port
 		(pt 216 112)
 		(output)
-		(text "memRd" (rect 0 0 41 13)(font "Arial" ))
-		(text "memRd" (rect 161 107 195 120)(font "Arial" ))
+		(text "fetchMem" (rect 0 0 51 13)(font "Arial" ))
+		(text "fetchMem" (rect 152 107 195 120)(font "Arial" ))
 		(line (pt 216 112)(pt 200 112))
 	)
 	(drawing
 		(rectangle (rect 16 16 200 192))
-	)
-)
-(symbol
-	(rect -416 176 -352 224)
-	(text "OR2" (rect 1 0 22 10)(font "Arial" (font_size 6)))
-	(text "inst6" (rect 3 37 30 50)(font "Intel Clear" ))
-	(port
-		(pt 0 32)
-		(input)
-		(text "IN2" (rect 2 23 23 35)(font "Courier New" (bold))(invisible))
-		(text "IN2" (rect 2 23 23 35)(font "Courier New" (bold))(invisible))
-		(line (pt 0 32)(pt 15 32))
-	)
-	(port
-		(pt 0 16)
-		(input)
-		(text "IN1" (rect 2 7 23 19)(font "Courier New" (bold))(invisible))
-		(text "IN1" (rect 2 7 23 19)(font "Courier New" (bold))(invisible))
-		(line (pt 0 16)(pt 15 16))
-	)
-	(port
-		(pt 64 24)
-		(output)
-		(text "OUT" (rect 48 15 69 27)(font "Courier New" (bold))(invisible))
-		(text "OUT" (rect 48 15 69 27)(font "Courier New" (bold))(invisible))
-		(line (pt 48 24)(pt 64 24))
-	)
-	(drawing
-		(line (pt 14 36)(pt 25 36))
-		(line (pt 14 13)(pt 25 13))
-		(arc (pt 7 29)(pt 7 19)(rect -14 8 19 41))
-		(arc (pt 49 24)(pt 25 13)(rect -6 13 57 76))
-		(arc (pt 25 35)(pt 49 24)(rect -6 -27 57 36))
-	)
-)
-(symbol
-	(rect 560 184 608 216)
-	(text "NOT" (rect 1 0 21 10)(font "Arial" (font_size 6)))
-	(text "inst10" (rect 3 21 37 34)(font "Intel Clear" ))
-	(port
-		(pt 0 16)
-		(input)
-		(text "IN" (rect 2 7 16 19)(font "Courier New" (bold))(invisible))
-		(text "IN" (rect 2 7 16 19)(font "Courier New" (bold))(invisible))
-		(line (pt 0 16)(pt 13 16))
-	)
-	(port
-		(pt 48 16)
-		(output)
-		(text "OUT" (rect 32 7 53 19)(font "Courier New" (bold))(invisible))
-		(text "OUT" (rect 32 7 53 19)(font "Courier New" (bold))(invisible))
-		(line (pt 39 16)(pt 48 16))
-	)
-	(drawing
-		(line (pt 13 25)(pt 13 7))
-		(line (pt 13 7)(pt 31 16))
-		(line (pt 13 25)(pt 31 16))
-		(circle (rect 31 12 39 20))
-	)
-)
-(symbol
-	(rect -168 80 80 192)
-	(text "bus_mux2" (rect 5 0 60 13)(font "Arial" ))
-	(text "addrMux" (rect 8 96 55 109)(font "Intel Clear" ))
-	(port
-		(pt 0 32)
-		(input)
-		(text "busA[(bussize-1)..0]" (rect 0 0 105 13)(font "Arial" ))
-		(text "busA[(bussize-1)..0]" (rect 21 27 126 40)(font "Arial" ))
-		(line (pt 0 32)(pt 16 32)(line_width 3))
-	)
-	(port
-		(pt 0 48)
-		(input)
-		(text "busB[(bussize-1)..0]" (rect 0 0 105 13)(font "Arial" ))
-		(text "busB[(bussize-1)..0]" (rect 21 43 126 56)(font "Arial" ))
-		(line (pt 0 48)(pt 16 48)(line_width 3))
-	)
-	(port
-		(pt 0 64)
-		(input)
-		(text "sel" (rect 0 0 15 13)(font "Arial" ))
-		(text "sel" (rect 21 59 36 72)(font "Arial" ))
-		(line (pt 0 64)(pt 16 64))
-	)
-	(port
-		(pt 248 32)
-		(output)
-		(text "Q[(bussize-1)..0]" (rect 0 0 87 13)(font "Arial" ))
-		(text "Q[(bussize-1)..0]" (rect 154 27 241 40)(font "Arial" ))
-		(line (pt 248 32)(pt 232 32)(line_width 3))
-	)
-	(parameter
-		"busSize"
-		"16"
-		""
-		(type "PARAMETER_SIGNED_DEC")	)
-	(drawing
-		(rectangle (rect 16 16 232 96))
-	)
-	(annotation_block (parameter)(rect -168 48 6 78))
-)
-(symbol
-	(rect 616 8 784 120)
-	(text "bus_mux2_8b" (rect 5 0 79 13)(font "Arial" ))
-	(text "dataMux" (rect 8 96 54 109)(font "Intel Clear" ))
-	(port
-		(pt 0 32)
-		(input)
-		(text "busA[7..0]" (rect 0 0 53 13)(font "Arial" ))
-		(text "busA[7..0]" (rect 21 27 74 40)(font "Arial" ))
-		(line (pt 0 32)(pt 16 32)(line_width 3))
-	)
-	(port
-		(pt 0 48)
-		(input)
-		(text "busB[7..0]" (rect 0 0 53 13)(font "Arial" ))
-		(text "busB[7..0]" (rect 21 43 74 56)(font "Arial" ))
-		(line (pt 0 48)(pt 16 48)(line_width 3))
-	)
-	(port
-		(pt 0 64)
-		(input)
-		(text "sel" (rect 0 0 15 13)(font "Arial" ))
-		(text "sel" (rect 21 59 36 72)(font "Arial" ))
-		(line (pt 0 64)(pt 16 64))
-	)
-	(port
-		(pt 168 32)
-		(output)
-		(text "Q[7..0]" (rect 0 0 35 13)(font "Arial" ))
-		(text "Q[7..0]" (rect 118 27 153 40)(font "Arial" ))
-		(line (pt 168 32)(pt 152 32)(line_width 3))
-	)
-	(drawing
-		(rectangle (rect 16 16 152 96))
 	)
 )
 (connector
@@ -1437,28 +1404,6 @@ https://fpgasoftware.intel.com/eula.
 	(bus)
 )
 (connector
-	(text "memRead" (rect 746 752 800 765)(font "Intel Clear" ))
-	(pt 736 768)
-	(pt 816 768)
-)
-(connector
-	(pt 224 48)
-	(pt 224 56)
-)
-(connector
-	(pt -432 208)
-	(pt -416 208)
-)
-(connector
-	(text "memRead" (rect -478 176 -424 189)(font "Intel Clear" ))
-	(pt -416 192)
-	(pt -488 192)
-)
-(connector
-	(pt -432 272)
-	(pt -432 208)
-)
-(connector
 	(pt -456 272)
 	(pt -432 272)
 )
@@ -1469,22 +1414,6 @@ https://fpgasoftware.intel.com/eula.
 (connector
 	(pt -432 272)
 	(pt 432 272)
-)
-(connector
-	(pt 224 48)
-	(pt -328 48)
-)
-(connector
-	(pt -328 200)
-	(pt -328 48)
-)
-(connector
-	(pt -352 200)
-	(pt -328 200)
-)
-(connector
-	(pt -328 200)
-	(pt 224 200)
 )
 (connector
 	(pt 224 120)
@@ -1518,24 +1447,6 @@ https://fpgasoftware.intel.com/eula.
 	(pt 224 0)
 	(pt 160 0)
 	(bus)
-)
-(connector
-	(pt 1008 616)
-	(pt 1008 424)
-)
-(connector
-	(pt 1008 424)
-	(pt 1008 288)
-)
-(connector
-	(text "fe" (rect 1018 408 1028 421)(font "Intel Clear" ))
-	(pt 1008 424)
-	(pt 1064 424)
-)
-(connector
-	(text "fe" (rect -294 128 -284 141)(font "Intel Clear" ))
-	(pt -168 144)
-	(pt -296 144)
 )
 (connector
 	(pt 616 56)
@@ -1622,6 +1533,40 @@ https://fpgasoftware.intel.com/eula.
 	(pt 872 40)
 	(bus)
 )
+(connector
+	(pt -328 200)
+	(pt -328 48)
+)
+(connector
+	(pt -328 200)
+	(pt 224 200)
+)
+(connector
+	(pt 224 48)
+	(pt -328 48)
+)
+(connector
+	(pt -432 200)
+	(pt -328 200)
+)
+(connector
+	(pt -432 200)
+	(pt -432 272)
+)
+(connector
+	(text "fm" (rect 746 752 761 765)(font "Intel Clear" ))
+	(pt 736 768)
+	(pt 816 768)
+)
+(connector
+	(text "fm" (rect -294 128 -279 141)(font "Intel Clear" ))
+	(pt -168 144)
+	(pt -296 144)
+)
+(connector
+	(pt 1008 288)
+	(pt 1008 616)
+)
 (junction (pt 432 272))
 (junction (pt 432 528))
 (junction (pt 192 536))
@@ -1631,9 +1576,7 @@ https://fpgasoftware.intel.com/eula.
 (junction (pt 424 784))
 (junction (pt 992 272))
 (junction (pt 760 688))
-(junction (pt 224 48))
 (junction (pt -432 272))
 (junction (pt -328 200))
 (junction (pt 160 112))
-(junction (pt 1008 424))
 (junction (pt 104 112))
