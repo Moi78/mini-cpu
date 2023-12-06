@@ -18,7 +18,7 @@
 -- suit user's needs .Comments are provided in each section to help the user  
 -- fill out necessary details.                                                
 -- ***************************************************************************
--- Generated on "11/08/2023 11:33:27"
+-- Generated on "12/06/2023 11:06:22"
                                                             
 -- Vhdl Test Bench template for design  :  mini_cpu
 -- 
@@ -33,23 +33,17 @@ END mini_cpu_vhd_tst;
 ARCHITECTURE mini_cpu_arch OF mini_cpu_vhd_tst IS
 -- constants                                                 
 -- signals                                                   
-SIGNAL CARRY : STD_LOGIC;
 SIGNAL CLOCK : STD_LOGIC;
-SIGNAL READSIG : STD_LOGIC;
 COMPONENT mini_cpu
 	PORT (
-	CARRY : OUT STD_LOGIC;
-	CLOCK : IN STD_LOGIC;
-	READSIG : OUT STD_LOGIC
+	CLOCK : IN STD_LOGIC
 	);
 END COMPONENT;
 BEGIN
 	i1 : mini_cpu
 	PORT MAP (
 -- list connections between master ports and signals
-	CARRY => CARRY,
-	CLOCK => CLOCK,
-	READSIG => READSIG
+	CLOCK => CLOCK
 	);
 PROCESS
 BEGIN
@@ -63,5 +57,5 @@ BEGIN
 	WAIT FOR 10 ns;
 	CLOCK <= '1';
 	WAIT FOR 10 ns;
-END PROCESS;                                           
+END PROCESS;                                          
 END mini_cpu_arch;

@@ -41,7 +41,7 @@ begin
 					when Idle =>
 						currentState <= Exec;
 					when Exec =>
-						if op = "0010" or op = "0011" then
+						if op = "0010" or op = "0011" or op = "0100" or op = "0101" then
 							currentState <= LongUpdt;
 						else
 							currentState <= Update;
@@ -73,7 +73,7 @@ begin
 						when "011" => iOutput <= i_regC;
 						when others => iOutput <= "00000000";
 					end case;
-				elsif op = "0010" then -- Mem to Reg A
+				elsif op = "0010" or op = "0100" then -- Mem to Reg A OR Mem to Reg B
 					outAddr(15 downto 8) <= opDataH;
 					outAddr(7 downto 0) <= opDataL;
 					
@@ -83,6 +83,12 @@ begin
 					outAddr(7 downto 0) <= opDataL;
 					
 					iOutput <= i_regA;
+					fetchMem <= '1';
+				elsif op = "0101" then -- Reg B to Mem
+					outAddr(15 downto 8) <= opDataH;
+					outAddr(7 downto 0) <= opDataL;
+					
+					iOutput <= i_regB;
 					fetchMem <= '1';
 				elsif op = "0110" then -- Load ctant in register
 					iOutput <= opDataH;
@@ -96,6 +102,9 @@ begin
 				if op = "0011" then -- Mov RegA to Mem
 					iOutput <= i_regA;
 					updtBus <= "101";
+				elsif op = "0101" then -- Mov Reg B to Mem
+					iOutput <= i_regB;
+					updtBus <= "101";
 				end if;
 			when Update =>
 				fetchE <= '0';
@@ -106,8 +115,11 @@ begin
 				elsif op = "0010" then -- Mov Mem to RegA
 					iOutput <= i_mem;
 					updtBus <= "001";
-				elsif op = "0011" then
+				elsif op = "0011" or op = "0101" then
 					updtBus <= "000";
+				elsif op = "0100" then -- Mov Mem to RegB
+					iOutput <= i_mem;
+					updtBus <= "010";
 				elsif op = "0111" then -- Jump to ctant address
 					updtBus <= "100";
 				end if;
