@@ -18,11 +18,13 @@ entity memory_pipeline is
 		
 		output	: out std_logic_vector(7 downto 0);
 		outputPC	: out std_logic_vector(15 downto 0);
-		updtBus	: out std_logic_vector(2 downto 0) := "000";
+		updtBus	: out std_logic_vector(2 downto 0);
 		
-		fetchE	: out std_logic := '0';
-		outAddr	: out std_logic_vector(15 downto 0) := (others => '0');
-		fetchMem : out std_logic := '0'
+		fetchE	: out std_logic;
+		outAddr	: out std_logic_vector(15 downto 0);
+		fetchMem : out std_logic;
+		
+		reset    : in std_logic
 	);
 end entity memory_pipeline;
 
@@ -51,10 +53,16 @@ begin
 					when Update =>
 						currentState <= Idle;
 				end case;
+			else
+				currentState <= Idle;
+			end if;
+			
+			if reset = '0' then
+				currentState <= Idle;
 			end if;
 	end process;
 	
-	process (currentState)
+	process (currentState, reset)
 	begin
 		case currentState is 
 			when Idle =>

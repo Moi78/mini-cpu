@@ -7,17 +7,21 @@ entity fetcher is
 		clk		: in std_logic;
 		fetch_en	: in std_logic;
 		data_in	: in std_logic_vector(7 downto 0);
+		
 		pline_sel: out std_logic_vector(3 downto 0);
 		op			: out std_logic_vector(3 downto 0);
 		operand_a: out std_logic_vector(7 downto 0);
 		operand_b: out std_logic_vector(7 downto 0);
+		
 		pline_en : out std_logic;
-		pc_en		: out std_logic
+		pc_en		: out std_logic;
+		
+		reset    : in std_logic
 	);
 end entity fetcher;
 
 architecture a_fetcher of fetcher is
-	signal fetch_counter : integer range 0 to 4 := 4;
+	signal fetch_counter : integer range 0 to 4;
 	signal iPline_en		: std_logic;
 begin
 	process
@@ -31,6 +35,10 @@ begin
 			else
 				fetch_counter <= fetch_counter + 1;
 			end if;
+		end if;
+		
+		if reset = '0' then
+			fetch_counter <= 0;
 		end if;
 	end process;
 		

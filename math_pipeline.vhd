@@ -18,16 +18,18 @@ entity math_pipeline is
 		fetchE: out std_logic;
 		
 		outFlg: out std_logic_vector(7 downto 0);
-		flgUpd: out std_logic
+		flgUpd: out std_logic;
+		
+		reset : in std_logic
 	);
 end entity math_pipeline;
 
 architecture a_mpline of math_pipeline is
 	type etat is (Idle, ReadRegs, Exec, WriteReg);
 	signal currentState : etat := Idle;
-	signal resultReg 	  : std_logic_vector(17 downto 0) := (others => '0');
-	signal iFlags		  : std_logic_vector(7 downto 0) := (others => '0');
-	signal iFlags_down  : std_logic_vector(7 downto 0) := (others => '0');
+	signal resultReg 	  : std_logic_vector(17 downto 0);
+	signal iFlags		  : std_logic_vector(7 downto 0);
+	signal iFlags_down  : std_logic_vector(7 downto 0);
 begin
 	process
 	begin
@@ -49,9 +51,13 @@ begin
 		else
 			currentState <= Idle;
 		end if;
+		
+		if reset = '0' then
+			currentState <= Idle;
+		end if;
 	end process;
 	
-	process (currentState)
+	process (currentState, reset)
 	begin
 		case currentState is
 			when Idle =>

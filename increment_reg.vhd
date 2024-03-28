@@ -11,23 +11,29 @@ entity increment_reg is
 		incr_en	: in std_logic;
 		update   : in std_logic;
 		inData	: in std_logic_vector(reg_size - 1 downto 0);
-		outData	: out std_logic_vector(reg_size - 1 downto 0)
+		outData	: out std_logic_vector(reg_size - 1 downto 0);
+		
+		reset    : in std_logic
 	);
 end entity increment_reg;
 
 architecture a_inc_reg of increment_reg is
-	signal iData : unsigned(reg_size - 1 downto 0) := (others => '0');
+	signal iData : unsigned(reg_size - 1 downto 0);
 begin
 	process
 	begin
 		wait until falling_edge(clock);
 		
-		if update = '1' then
-			iData <= unsigned(inData);
-		end if;
-		
-		if incr_en = '1' then
-			iData <= iData + 1;
+		if reset = '0' then
+			iData <= (others => '0');
+		else		
+			if update = '1' then
+				iData <= unsigned(inData);
+			end if;
+			
+			if incr_en = '1' then
+				iData <= iData + 1;
+			end if;
 		end if;
 	end process;
 	
