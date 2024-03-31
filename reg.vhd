@@ -9,7 +9,9 @@ entity reg is
 	port(
 		en			: in std_logic;
 		data_in	: in std_logic_vector((size - 1) downto 0);
-		data_out : out std_logic_vector((size - 1) downto 0)
+		data_out : out std_logic_vector((size - 1) downto 0);
+		
+		reset    : in std_logic
 	);
 end entity;
 
@@ -18,8 +20,12 @@ architecture a_reg of reg is
 begin
 	data_out <= i_dout;
 
-	process (en)
+	process (en, reset)
 	begin
+		if reset = '0' then
+			i_dout <= (others => '0');
+		end if;
+	
 		if en = '1' then
 			i_dout <= data_in;
 		end if;

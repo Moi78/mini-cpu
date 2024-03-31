@@ -111,10 +111,16 @@ begin
 				else
 					iFlags_down(0) <= '1';
 				end if;
+				
+				if op = "1001" then
+					flgUpd <= '1';
+				else
+					writeR <= '1';
+				end if;
 			when WriteReg =>
-				writeR <= '1';
 				fetchE <= '0';
-				flgUpd <= '1';
+				flgUpd <= '0';
+				writeR <= '0';
 		end case;
 	end process;
 	

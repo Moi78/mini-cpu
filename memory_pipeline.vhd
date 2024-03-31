@@ -24,7 +24,8 @@ entity memory_pipeline is
 		outAddr	: out std_logic_vector(15 downto 0);
 		fetchMem : out std_logic;
 		
-		reset    : in std_logic
+		reset    : in std_logic;
+		i_flags  : in std_logic_vector(7 downto 0)
 	);
 end entity memory_pipeline;
 
@@ -101,10 +102,9 @@ begin
 				elsif op = "0110" then -- Load ctant in register
 					iOutput <= opDataH;
 					
-				elsif op = "0111" then -- Jump to ctant address
+				elsif op = "0111" or op = "1000" then -- Jump to ctant address / Jump if equal
 					iJump(15 downto 8) <= opDataH;
 					iJump(7 downto 0) <= opDataL;
-	
 				end if;
 			when LongUpdt =>
 				if op = "0011" then -- Mov RegA to Mem
@@ -130,6 +130,10 @@ begin
 					updtBus <= "010";
 				elsif op = "0111" then -- Jump to ctant address
 					updtBus <= "100";
+				elsif op = "1000" then -- Jump if equal
+					if i_flags(1) = '1' then -- Flag[1] => Flag Equal
+						updtBus <= "100";
+					end if;
 				end if;
 		end case;
 	end process;

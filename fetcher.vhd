@@ -38,7 +38,7 @@ begin
 		end if;
 		
 		if reset = '0' then
-			fetch_counter <= 0;
+			fetch_counter <= 4;
 		end if;
 	end process;
 		

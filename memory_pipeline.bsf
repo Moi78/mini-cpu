@@ -21,9 +21,9 @@ https://fpgasoftware.intel.com/eula.
 */
 (header "symbol" (version "1.1"))
 (symbol
-	(rect 16 16 232 224)
+	(rect 16 16 232 256)
 	(text "memory_pipeline" (rect 5 0 73 12)(font "Arial" ))
-	(text "inst" (rect 8 192 20 204)(font "Arial" ))
+	(text "inst" (rect 8 224 20 236)(font "Arial" ))
 	(port
 		(pt 0 32)
 		(input)
@@ -95,6 +95,13 @@ https://fpgasoftware.intel.com/eula.
 		(line (pt 0 176)(pt 16 176)(line_width 1))
 	)
 	(port
+		(pt 0 192)
+		(input)
+		(text "i_flags[7..0]" (rect 0 0 46 12)(font "Arial" ))
+		(text "i_flags[7..0]" (rect 21 187 67 199)(font "Arial" ))
+		(line (pt 0 192)(pt 16 192)(line_width 3))
+	)
+	(port
 		(pt 216 32)
 		(output)
 		(text "output[7..0]" (rect 0 0 43 12)(font "Arial" ))
@@ -137,6 +144,6 @@ https://fpgasoftware.intel.com/eula.
 		(line (pt 216 112)(pt 200 112)(line_width 1))
 	)
 	(drawing
-		(rectangle (rect 16 16 200 192)(line_width 1))
+		(rectangle (rect 16 16 200 224)(line_width 1))
 	)
 )
