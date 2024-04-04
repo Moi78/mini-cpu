@@ -57,8 +57,9 @@ begin
 		end if;
 	end process;
 	
-	process (currentState, reset)
+	process
 	begin
+		wait until falling_edge(clk);
 		case currentState is
 			when Idle =>
 				writeR <= '0';
@@ -114,7 +115,9 @@ begin
 				
 				if op = "1001" then
 					flgUpd <= '1';
+					writeR <= '0';
 				else
+					flgUpd <= '1';
 					writeR <= '1';
 				end if;
 			when WriteReg =>

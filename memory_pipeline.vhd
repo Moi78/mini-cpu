@@ -44,7 +44,7 @@ begin
 					when Idle =>
 						currentState <= Exec;
 					when Exec =>
-						if op = "0010" or op = "0011" or op = "0100" or op = "0101" then
+						if op = "0010" or op = "0011" or op = "0100" or op = "0101" or op = "1000" or op = "0111" then
 							currentState <= LongUpdt;
 						else
 							currentState <= Update;
@@ -63,8 +63,9 @@ begin
 			end if;
 	end process;
 	
-	process (currentState, reset)
+	process
 	begin
+		wait until falling_edge(clk);
 		case currentState is 
 			when Idle =>
 				fetchE <= '0';
@@ -113,6 +114,12 @@ begin
 				elsif op = "0101" then -- Mov Reg B to Mem
 					iOutput <= i_regB;
 					updtBus <= "101";
+				elsif op = "1000" then -- JE
+					if i_flags(1) = '1' then -- Flag[1] => Flag Equal
+						updtBus <= "100";
+					end if;
+				elsif op = "0111" then -- JMP
+					updtBus <= "100";
 				end if;
 			when Update =>
 				fetchE <= '0';
@@ -128,12 +135,6 @@ begin
 				elsif op = "0100" then -- Mov Mem to RegB
 					iOutput <= i_mem;
 					updtBus <= "010";
-				elsif op = "0111" then -- Jump to ctant address
-					updtBus <= "100";
-				elsif op = "1000" then -- Jump if equal
-					if i_flags(1) = '1' then -- Flag[1] => Flag Equal
-						updtBus <= "100";
-					end if;
 				end if;
 		end case;
 	end process;

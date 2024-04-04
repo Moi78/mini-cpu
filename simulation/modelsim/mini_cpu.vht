@@ -18,7 +18,7 @@
 -- suit user's needs .Comments are provided in each section to help the user  
 -- fill out necessary details.                                                
 -- ***************************************************************************
--- Generated on "03/28/2024 21:20:43"
+-- Generated on "04/04/2024 09:13:38"
                                                             
 -- Vhdl Test Bench template for design  :  mini_cpu
 -- 
@@ -44,7 +44,7 @@ SIGNAL IOINBUS : STD_LOGIC_VECTOR(7 DOWNTO 0);
 SIGNAL IOR : STD_LOGIC;
 SIGNAL IOW : STD_LOGIC;
 SIGNAL KEY : STD_LOGIC_VECTOR(0 DOWNTO 0);
-SIGNAL LEDR : STD_LOGIC_VECTOR(7 DOWNTO 0);
+SIGNAL LEDR : STD_LOGIC_VECTOR(9 DOWNTO 0);
 SIGNAL MAX10_CLK1_50 : STD_LOGIC;
 SIGNAL SW : STD_LOGIC_VECTOR(1 DOWNTO 1);
 COMPONENT mini_cpu
@@ -60,7 +60,7 @@ COMPONENT mini_cpu
 	IOR : OUT STD_LOGIC;
 	IOW : OUT STD_LOGIC;
 	KEY : IN STD_LOGIC_VECTOR(0 DOWNTO 0);
-	LEDR : OUT STD_LOGIC_VECTOR(7 DOWNTO 0);
+	LEDR : OUT STD_LOGIC_VECTOR(9 DOWNTO 0);
 	MAX10_CLK1_50 : IN STD_LOGIC;
 	SW : IN STD_LOGIC_VECTOR(1 DOWNTO 1)
 	);
@@ -99,5 +99,5 @@ BEGIN
 	WAIT FOR 10 ns;
 	MAX10_CLK1_50 <= '1';
 	WAIT FOR 10 ns;
-END PROCESS;                                           
+END PROCESS;                                            
 END mini_cpu_arch;

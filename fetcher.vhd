@@ -28,7 +28,7 @@ begin
 	begin
 		wait until rising_edge(clk);
 		
-		if fetch_en = '0' then
+		if fetch_en = '0' and not (reset = '0') then
 			-- Handling counter
 			if fetch_counter = 4 then
 				fetch_counter <= 0;

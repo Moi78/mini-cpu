@@ -27,7 +27,7 @@ entity io_pipeline is
 end entity io_pipeline;
 
 architecture a_io_pipeline of io_pipeline is
-	type etat is (Idle, Query, Output, Update);
+	type etat is (Idle, Query, Output, Update, Update2);
 	signal state : etat := Idle;
 begin
 	process
@@ -39,7 +39,8 @@ begin
 				when Idle => state <= Query;
 				when Query => state <= Output;
 				when Output => state <= Update;
-				when Update => state <= Idle;
+				when Update => state <= Update2;
+				when Update2 => state <= Idle;
 			end case;
 		else
 			state <= Idle;
@@ -50,8 +51,9 @@ begin
 		end if;
 	end process;
 	
-	process (state, reset)
+	process
 	begin
+		wait until falling_edge(clk);
 		if state = Idle then
 			io_write <= '0';
 			io_read <= '0';
@@ -75,24 +77,22 @@ begin
 				io_write <= '0';
 			elsif op = "0010" then -- OUTB
 				oData <= iRegA;
+				
+				io_read <= '0';
+				io_write <= '1';
 			end if;
 		
 		elsif state = Output then
 			if op = "0001" then -- INB
 				oRegA <= iData;
-			elsif op = "0010" then -- OUTB
-				io_read <= '0';
-				io_write <= '1';
-			end if;
-		
-		elsif state = Update then
-			fetchE <= '0';
-			io_read <= '0';
-			io_write <= '0';
-			
-			if op  = "0001" then
 				regA_updt <= '1';
 			end if;
+		elsif state = Update then
+			regA_updt <= '0';
+			io_write <= '0';
+		elsif state = Update2 then
+			fetchE <= '0';
+			io_read <= '0';
 		end if;
 	end process;
 end architecture a_io_pipeline;
