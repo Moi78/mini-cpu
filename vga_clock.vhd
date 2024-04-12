@@ -23,6 +23,9 @@ architecture a_vclk of vga_clock is
 	signal pixel_h: integer range 0 to 800;
 	signal line_v: integer range 0 to 525;
 begin
+	px_x <= std_logic_vector(to_unsigned(pixel_h, 16));
+	px_y <= std_logic_vector(to_unsigned(line_v, 16));
+
 	process
 	begin
 		wait until rising_edge(clk);
