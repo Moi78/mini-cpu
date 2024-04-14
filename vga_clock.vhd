@@ -13,18 +13,22 @@ entity vga_clock is
 		vblank: out std_logic;
 		rsig  : out std_logic_vector(3 downto 0);
 		gsig  : out std_logic_vector(3 downto 0);
-		bsig  : out std_logic_vector(3 downto 0)
+		bsig  : out std_logic_vector(3 downto 0);
+		px_clk: out std_logic
 	);
 end entity vga_clock;
 
 architecture a_vclk of vga_clock is
 	signal clk_25m : std_logic;
 	
-	signal pixel_h: integer range 0 to 800;
-	signal line_v: integer range 0 to 525;
+	signal pixel_h : integer range 0 to 800;
+	signal line_v  : integer range 0 to 525;
+	
+	signal i_pxx   : unsigned(15 downto 0);
+	signal i_pxy   : unsigned(15 downto 0);
 begin
-	px_x <= std_logic_vector(to_unsigned(pixel_h, 16));
-	px_y <= std_logic_vector(to_unsigned(line_v, 16));
+	px_x <= std_logic_vector(i_pxx);
+	px_y <= std_logic_vector(i_pxy);
 
 	process
 	begin
@@ -47,6 +51,12 @@ begin
 			pixel_h <= 0;
 			line_v <= line_v + 1;
 			
+			if (line_v < 35) then
+				i_pxy <= to_unsigned(0, 16);
+			else
+				i_pxy <= i_pxy + 1;
+			end if;
+			
 			if line_v = 524 then
 				line_v <= 0;
 			end if;
@@ -54,8 +64,10 @@ begin
 		
 		if (pixel_h < 96) then
 			hblank <= '0';
+			i_pxx <= to_unsigned(0, 16);
 		else
 			hblank <= '1';
+			i_pxx <= i_pxx + 1;
 		end if;
 		
 		if (line_v < 2) then
@@ -74,4 +86,6 @@ begin
 			bsig <= px_dat(3 downto 2) & "00";
 		end if;
 	end process;
+	
+	px_clk <= clk_25m;
 end architecture a_vclk;
