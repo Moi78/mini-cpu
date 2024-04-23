@@ -144,15 +144,18 @@ begin
 		end if;
 		
 		-- Display management
-		if (i_pxx > i_sprx) and (i_line_drawn_spr(0) = '0') and (i_pxy > i_spry) and (i_pxy < i_spr_ylimit) then
+		if (i_line_drawn_spr(0) = '0') and (i_pxx > i_sprx) and (i_pxy > i_spry) and (i_pxy < i_spr_ylimit) then
 			i_disp_state <= sprite_line;
 			i_line_drawn_spr(0) <= '1';
 			
 			vram_rq <= '1';
-			vram_addr <= std_logic_vector(i_spr_data_addr);
 		elsif i_spr_cpt = 31 then
 			i_disp_state <= bg_color;
 			vram_rq <= '0';
+		end if;
+		
+		if (i_bg_state = idle_bg) then
+			vram_addr <= std_logic_vector(i_spr_data_addr);
 		end if;
 		
 		-- Output pixel color
@@ -160,8 +163,11 @@ begin
 			i_px_color <= i_bg_color;
 			
 		elsif i_disp_state = sprite_line then
-			--vram_addr <= std_logic_vector(i_spr_data_addr);
-			i_px_color <= vram_in;
+			if vram_in(0) = '1' then
+				i_px_color <= vram_in;
+			else
+				i_px_color <= i_bg_color;
+			end if;
 			
 		end if;
 		
