@@ -31,6 +31,14 @@ architecture a_gc of gfx_controller is
 	);
 	type disp_state is (bg_color, sprite_line);
 	
+	type t_SPRITE is record
+		sprx          : unsigned(15 downto 0);
+		spry			  : unsigned(15 downto 0);
+		cpt       : integer range 0 to 32;
+		ylimit    : unsigned(15 downto 0);
+		data_addr : unsigned(15 downto 0);
+	end record t_SPRITE;
+	
 	signal i_bg_state      : bg_state;
 	signal i_disp_state    :  disp_state;
 	
@@ -40,11 +48,13 @@ architecture a_gc of gfx_controller is
 	signal i_pxy 		     : unsigned(15 downto 0);
 	signal i_pxx			  : unsigned(15 downto 0);
 	
-	signal i_sprx          : unsigned(15 downto 0);
-	signal i_spry			  : unsigned(15 downto 0);
-	signal i_spr_cpt       : integer range 0 to 32;
-	signal i_spr_ylimit    : unsigned(15 downto 0);
-	signal i_spr_data_addr : unsigned(15 downto 0);
+	--signal i_sprx          : unsigned(15 downto 0);
+	--signal i_spry			  : unsigned(15 downto 0);
+	--signal i_spr_cpt       : integer range 0 to 32;
+	--signal i_spr_ylimit    : unsigned(15 downto 0);
+	--signal i_spr_data_addr : unsigned(15 downto 0);
+	
+	signal i_sprites		  : t_SPRITE;
 	
 	signal i_sprite_flags  : std_logic_vector(7 downto 0);
 	signal i_line_drawn_spr: std_logic_vector(7 downto 0);
@@ -124,38 +134,38 @@ begin
 			
 		elsif i_bg_state = fetch_spos_xhigh then
 			vram_addr <= "0000000000000100"; -- Sprite YLow address : 0x0004 + offset
-			i_sprx(7 downto 0) <= unsigned(vram_in); -- XLow loaded
+			i_sprites.sprx(7 downto 0) <= unsigned(vram_in); -- XLow loaded
 			
 		elsif i_bg_state = fetch_spos_ylow then
 			vram_addr <= "0000000000000101"; -- Sprite YHigh address : 0x0005 + offset
-			i_sprx(15 downto 8) <= unsigned(vram_in); -- XHigh loaded
+			i_sprites.sprx(15 downto 8) <= unsigned(vram_in); -- XHigh loaded
 			
 		elsif i_bg_state = fetch_spos_yhigh then
-			i_spry(7 downto 0) <= unsigned(vram_in); -- YLow loaded
+			i_sprites.spry(7 downto 0) <= unsigned(vram_in); -- YLow loaded
 			
 		elsif i_bg_state = fetch_spos_end then
-			i_spry(15 downto 8) <= unsigned(vram_in); -- YHigh loaded
+			i_sprites.spry(15 downto 8) <= unsigned(vram_in); -- YHigh loaded
 			
 		elsif i_bg_state = fetch_spos_end2 then
-			i_spr_ylimit <= i_spry + 32; -- Computing Y limit
+			i_sprites.ylimit <= i_sprites.spry + 32; -- Computing Y limit
 			
 		elsif i_bg_state = fetch_bg_free_vram then
 			vram_rq <= '0';
 		end if;
 		
 		-- Display management
-		if (i_line_drawn_spr(0) = '0') and (i_pxx > i_sprx) and (i_pxy > i_spry) and (i_pxy < i_spr_ylimit) then
+		if (i_line_drawn_spr(0) = '0') and (i_pxx > i_sprites.sprx) and (i_pxy > i_sprites.spry) and (i_pxy < i_sprites.ylimit) then
 			i_disp_state <= sprite_line;
 			i_line_drawn_spr(0) <= '1';
 			
 			vram_rq <= '1';
-		elsif i_spr_cpt = 31 then
+		elsif i_sprites.cpt = 31 then
 			i_disp_state <= bg_color;
 			vram_rq <= '0';
 		end if;
 		
 		if (i_bg_state = idle_bg) then
-			vram_addr <= std_logic_vector(i_spr_data_addr);
+			vram_addr <= std_logic_vector(i_sprites.data_addr);
 		end if;
 		
 		-- Output pixel color
@@ -178,14 +188,14 @@ begin
 		wait until rising_edge(px_clock);
 		
 		if i_disp_state = sprite_line then
-			i_spr_cpt <= i_spr_cpt + 1;
-			i_spr_data_addr <= i_spr_data_addr + 1;
+			i_sprites.cpt <= i_sprites.cpt + 1;
+			i_sprites.data_addr <= i_sprites.data_addr + 1;
 		else
-			i_spr_cpt <= 0;
+			i_sprites.cpt <= 0;
 		end if;
 		
 		if vsync = '0' then
-			i_spr_data_addr <= "0000000000000110";
+			i_sprites.data_addr <= "0000000000000110";
 		end if;
 	end process;
 
