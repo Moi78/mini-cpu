@@ -26,7 +26,7 @@ architecture a_gc of gfx_controller is
 		idle_bg, 
 		fetch_bg_rq, fetch_bg_get, fetch_bg_end,
 		fetch_sprite_flags, fetch_sf_get, fetch_sf_end,
-		fetch_spos_start, fetch_spos_xlow, fetch_spos_xhigh, fetch_spos_ylow, fetch_spos_yhigh, fetch_spos_end,
+		fetch_spos_start, fetch_spos_xlow, fetch_spos_xhigh, fetch_spos_ylow, fetch_spos_yhigh, fetch_spos_end, fetch_spos_end2,
 		fetch_bg_free_vram
 	);
 	type disp_state is (bg_color, sprite_line);
@@ -96,7 +96,8 @@ begin
 				when fetch_spos_xhigh => i_bg_state <= fetch_spos_ylow;
 				when fetch_spos_ylow => i_bg_state <= fetch_spos_yhigh;
 				when fetch_spos_yhigh => i_bg_state <= fetch_spos_end;
-				when fetch_spos_end => i_bg_state <= fetch_bg_free_vram;
+				when fetch_spos_end => i_bg_state <= fetch_spos_end2;
+				when fetch_spos_end2 => i_bg_state <= fetch_bg_free_vram;
 				
 				when fetch_bg_free_vram => i_bg_state <= idle_bg;
 				when idle_bg => i_bg_state <= idle_bg;
@@ -116,6 +117,30 @@ begin
 			
 		elsif i_bg_state = fetch_sf_end then
 			i_sprite_flags <= vram_in;
+			
+		-- Sprite pos from memory
+		elsif i_bg_state = fetch_spos_start then
+			vram_addr <= "0000000000000010"; -- Sprite XLow address : 0x0002 + offset
+			
+		elsif i_bg_state = fetch_spos_xlow then
+			vram_addr <= "0000000000000011"; -- Sprite XHigh address : 0x0003 + offset
+			
+		elsif i_bg_state = fetch_spos_xhigh then
+			vram_addr <= "0000000000000100"; -- Sprite YLow address : 0x0004 + offset
+			i_sprx(7 downto 0) <= unsigned(vram_in); -- XLow loaded
+			
+		elsif i_bg_state = fetch_spos_ylow then
+			vram_addr <= "0000000000000101"; -- Sprite YHigh address : 0x0005 + offset
+			i_sprx(15 downto 8) <= unsigned(vram_in); -- XHigh loaded
+			
+		elsif i_bg_state = fetch_spos_yhigh then
+			i_spry(7 downto 0) <= unsigned(vram_in); -- YLow loaded
+			
+		elsif i_bg_state = fetch_spos_end then
+			i_spry(15 downto 8) <= unsigned(vram_in); -- YHigh loaded
+			
+		elsif i_bg_state = fetch_spos_end2 then
+			i_spr_ylimit <= i_spry + 32; -- Computing Y limit
 			
 		elsif i_bg_state = fetch_bg_free_vram then
 			vram_rq <= '0';
@@ -161,8 +186,8 @@ begin
 	i_pxy <= unsigned(pxy);
 	i_pxx <= unsigned(pxx);
 	
-	i_sprx <= to_unsigned(500, 16);
-	i_spry <= to_unsigned(200, 16);
-	i_spr_ylimit <= i_spry + 32;
+	--i_sprx <= to_unsigned(500, 16);
+	--i_spry <= to_unsigned(200, 16);
+	--i_spr_ylimit <= i_spry + 32;
 	
 end architecture a_gc;
