@@ -32,7 +32,7 @@ architecture a_gc of gfx_controller is
 	type disp_state is (bg_color, sprite_line);
 	
 	signal i_bg_state      : bg_state;
-	signal i_disp_state    : disp_state;
+	signal i_disp_state    :  disp_state;
 	
 	signal i_px_color      : std_logic_vector(7 downto 0);
 	signal i_bg_color      : std_logic_vector(7 downto 0);
@@ -44,10 +44,10 @@ architecture a_gc of gfx_controller is
 	signal i_spry			  : unsigned(15 downto 0);
 	signal i_spr_cpt       : integer range 0 to 32;
 	signal i_spr_ylimit    : unsigned(15 downto 0);
+	signal i_spr_data_addr : unsigned(15 downto 0);
 	
 	signal i_sprite_flags  : std_logic_vector(7 downto 0);
 	signal i_line_drawn_spr: std_logic_vector(7 downto 0);
-	signal i_sprite_drawn  : std_logic_vector(7 downto 0);
 	
 	signal refreshed_gpu : std_logic;
 begin
@@ -66,9 +66,6 @@ begin
 		end if;
 		
 		-- Update states on VSYNC
-		if vsync = '0' then
-			i_sprite_drawn <= (others => '0');
-		end if;
 		
 		-- Update states on HSYNC
 		if hsync = '0' then
@@ -147,17 +144,15 @@ begin
 		end if;
 		
 		-- Display management
-		if i_pxy = 32 then
-			i_sprite_drawn(0) <= '1';
-		end if;
-		
 		if (i_pxx > i_sprx) and (i_line_drawn_spr(0) = '0') and (i_pxy > i_spry) and (i_pxy < i_spr_ylimit) then
 			i_disp_state <= sprite_line;
 			i_line_drawn_spr(0) <= '1';
 			
+			vram_rq <= '1';
+			vram_addr <= std_logic_vector(i_spr_data_addr);
 		elsif i_spr_cpt = 31 then
 			i_disp_state <= bg_color;
-			
+			vram_rq <= '0';
 		end if;
 		
 		-- Output pixel color
@@ -165,7 +160,8 @@ begin
 			i_px_color <= i_bg_color;
 			
 		elsif i_disp_state = sprite_line then
-			i_px_color <= "01101000";
+			--vram_addr <= std_logic_vector(i_spr_data_addr);
+			i_px_color <= vram_in;
 			
 		end if;
 		
@@ -177,8 +173,13 @@ begin
 		
 		if i_disp_state = sprite_line then
 			i_spr_cpt <= i_spr_cpt + 1;
+			i_spr_data_addr <= i_spr_data_addr + 1;
 		else
 			i_spr_cpt <= 0;
+		end if;
+		
+		if vsync = '0' then
+			i_spr_data_addr <= "0000000000000110";
 		end if;
 	end process;
 
